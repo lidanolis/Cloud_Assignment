@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Cloud_Assignment.Areas.Identity.Data;
@@ -31,6 +32,7 @@ namespace Cloud_Assignment.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string Username { get; set; }
+        public string UserRole { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -59,18 +61,43 @@ namespace Cloud_Assignment.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Required(ErrorMessage = "You must enter the name first before submitting your form!")]
+            [StringLength(256, ErrorMessage = "You must enter the value between 6 - 256 chars", MinimumLength = 6)]
+            [Display(Name = "Your Full Name")] //label
+            public string userfullname { get; set; }
+            [Required]
+            [Display(Name = "Your DOB")]
+            [DataType(DataType.Date)]
+            public DateTime DoB { get; set; }
+
+            [Required(ErrorMessage = "You must enter the age first before submitting your form!")]
+            [Range(18, 100, ErrorMessage = "You must be 18 years old when register this member!")]
+            [Display(Name = "Your Age")] //label
+            public int age { get; set; }
+
+            [Required]
+            [DataType(DataType.MultilineText)]
+            [Display(Name = "Your Address")]
+            public string Address { get; set; }
         }
 
         private async Task LoadAsync(Cloud_AssignmentUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
+            var userrole = await _userManager.GetUserAsync(User);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
+            UserRole = userrole.UserRole;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                userfullname = user.UserFullName,
+                age = user.UserAge,
+                Address = user.UserAddress,
+                DoB = user.UserDOB
             };
         }
 
@@ -110,6 +137,24 @@ namespace Cloud_Assignment.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
+
+            if (Input.userfullname != user.UserFullName)
+            {
+                user.UserFullName = Input.userfullname;
+            }
+            if (Input.userfullname != user.UserFullName)
+            {
+                user.UserFullName = Input.userfullname;
+            }
+            if (Input.Address != user.UserAddress)
+            {
+                user.UserAddress = Input.Address;
+            }
+            if (Input.age != user.UserAge)
+            {
+                user.UserAge = Input.age;
+            }
+            await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
