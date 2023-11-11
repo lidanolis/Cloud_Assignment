@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.Runtime.InteropServices;
 
 namespace Cloud_Assignment.Areas.Identity.Pages.Account
 {
@@ -98,6 +99,19 @@ namespace Cloud_Assignment.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required(ErrorMessage = "You must enter the name first before submitting your form!")]
+            [StringLength(256, ErrorMessage = "You must enter the value between 6 - 256 chars", MinimumLength = 6)]
+            [Display(Name = "User Full Name")] //label
+            public string userfullname { get; set; }
+
+            [Required]
+            [Display(Name = "User DOB")]
+            [DataType(DataType.Date)]
+            public DateTime DoB { get; set; }
+
+            [Display(Name = "User Role")] //label
+            public string UserRole { get; set; }
         }
 
 
@@ -114,6 +128,10 @@ namespace Cloud_Assignment.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                user.UserFullName = Input.userfullname;
+                user.UserDOB = Input.DoB;
+                user.EmailConfirmed = true;
+                user.UserRole = "user";
                 user.EmailConfirmed = true;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

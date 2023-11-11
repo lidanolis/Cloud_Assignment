@@ -1,8 +1,24 @@
-﻿@{
+﻿@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@{
     ViewData["Title"] = "Home Page";
+    var UserAccount = await UserManager.GetUserAsync(User);
+}
+@inject UserManager<Cloud_AssignmentUser> UserManager
+
+@if(UserAccount == null)
+{
+    <div class="text-center">
+        <h1 class="display-4">Welcome To The Online FoodBank</h1>
+    </div>
+}   
+else{
+    <div class="text-center">
+        <h1 class="display-4">Welcome To The Online FoodBank</h1>
+        <h1 class="display-4">Here are your Information:</h1>
+        <h1 class="display-4">Name: @UserAccount.UserFullName</h1>
+        <h1 class="display-4">Role: @UserAccount.UserRole</h1>
+        <h1 class="display-4">DOB: @UserAccount.UserDOB</h1>
+    </div>
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
