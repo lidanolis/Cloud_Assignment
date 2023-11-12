@@ -11,7 +11,15 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
+        @if (userAccount.UserRole == "user")
+        {
+            <li class="nav-item">
+                <a id="addDonation" class="nav-link text-dark" asp-action="Index" asp-controller="Donation">
+                    DONATE
+                </a>
+            </li>
+        }
+        <li class="nav-item">
         <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @userAccount.UserFullName!</a>
     </li>
     <li class="nav-item">

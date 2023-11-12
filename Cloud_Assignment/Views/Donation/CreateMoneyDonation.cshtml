@@ -1,0 +1,37 @@
+﻿@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Cloud_AssignmentUser> UserManager
+
+@{
+    ViewData["Title"] = "CreateMoneyDonation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var UserAccount = await UserManager.GetUserAsync(User);
+}
+
+<h1>Create Money Donation</h1>
+
+<center>
+    <form asp-action="AddMoneyDonation" method="post">
+        <table>
+            <tr>
+                <th><label>User Information</label></th>
+                <td><input name="UserFullName" value="@UserAccount?.UserFullName" readonly /></td>
+                <td><input name="UserId" value="@UserAccount?.Id" hidden /></td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label>Amount:</label>
+                </th>
+                <td>
+                    <input name="Amount" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" id="submitbutton" name="submit" value="DONATE" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</center>
