@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
+using Cloud_Assignment.Models;
 namespace Cloud_Assignment.Data;
 
 public class Cloud_AssignmentContext : IdentityDbContext<Cloud_AssignmentUser>
@@ -11,6 +11,11 @@ public class Cloud_AssignmentContext : IdentityDbContext<Cloud_AssignmentUser>
         : base(options)
     {
     }
+    public DbSet<FoodRecord> FoodRecord { get; set; }
+
+    public DbSet<FinancialRecord> FinancialRecord { get; set; }
+    public DbSet<InventoryRecord> InventoryRecord { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
