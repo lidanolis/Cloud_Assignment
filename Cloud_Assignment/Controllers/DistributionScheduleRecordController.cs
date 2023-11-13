@@ -2,7 +2,7 @@
 
 namespace Cloud_Assignment.Controllers
 {
-    public class RequestRecordController : Controller
+    public class DistributionScheduleRecordController : Controller
     {
         public IActionResult Index()
         {

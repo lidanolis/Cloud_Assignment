@@ -6,6 +6,7 @@ namespace Cloud_Assignment.Controllers
     {
         public IActionResult Index()
         {
+            //havent create view yet (refer tutorial)
             return View();
         }
     }
