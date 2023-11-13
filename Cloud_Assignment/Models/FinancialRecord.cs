@@ -21,5 +21,7 @@ namespace Cloud_Assignment.Models
         public decimal Amount { get; set; }
         public decimal Balance { get; set; }
         public DateTime DOR { get; set; }
+
+        public String? Description {  get; set; }
     }
 }

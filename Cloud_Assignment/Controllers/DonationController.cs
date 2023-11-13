@@ -48,7 +48,7 @@ namespace Cloud_Assignment.Controllers
             if (isEqual)
             {
                 String FoodName = Request.Form["FoodType"];
-                String FoodDes = Request.Form["FoodDes"];
+                String FoodDes = Request.Form["FoodDesc"];
                 var Food = new InventoryRecord
                 {
                     FoodName = FoodName,
@@ -74,11 +74,10 @@ namespace Cloud_Assignment.Controllers
             else
             {
                 foodID = int.Parse(Request.Form["FoodId"]);
+                InventoryRecord SpecificInventory = await _context.InventoryRecord.FindAsync(foodID);
+                SpecificInventory.FoodTotal = SpecificInventory.FoodTotal + int.Parse(Request.Form["FoodQuantity"]);
+                await _context.SaveChangesAsync();
             }
-
-            InventoryRecord SpecificInventory = await _context.InventoryRecord.FindAsync(foodID);
-            SpecificInventory.FoodTotal = SpecificInventory.FoodTotal + int.Parse(Request.Form["FoodQuantity"]);
-            await _context.SaveChangesAsync();
 
             var Donation = new FoodRecord
             {
@@ -86,7 +85,8 @@ namespace Cloud_Assignment.Controllers
                 UserId = Request.Form["UserId"],
                 FoodId = foodID,
                 FoodQuantity = int.Parse(Request.Form["FoodQuantity"]),
-                DOR = DateTime.Now
+                DOR = DateTime.Now,
+                Description = "Food Donation"
             };
 
             _context.Add(Donation);
@@ -114,7 +114,8 @@ namespace Cloud_Assignment.Controllers
                 CurrencyType = "RM",
                 Amount = Decimal.Parse(Request.Form["Amount"]),
                 Balance = balance + Decimal.Parse(Request.Form["Amount"]),
-                DOR = DateTime.Now
+                DOR = DateTime.Now,
+                Description = "Money Donation"
             };
             _context.Add(Donation);
             await _context.SaveChangesAsync();
