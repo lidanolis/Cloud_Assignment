@@ -1,0 +1,50 @@
+﻿@model Cloud_Assignment.Models.DistributionSchedule
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Cloud_AssignmentUser> UserManager
+@{
+    var UserAccount = await UserManager.GetUserAsync(User);
+}
+
+<center>
+    <h1>Edit Distribution Schedule:</h1>
+    <br/><hr/><br/>
+    <form method="post" asp-action="UpdateDistributionRecord" asp-controller="DistributionScheduleRecord">
+        <table border='1'>
+            <tr>
+                <th><label asp-for="DistributionId"></label></th>
+                <td><input asp-for="DistributionId" readonly /></td>
+            </tr>
+            <tr>
+                <th><label asp-for="RecordType"></label></th>
+                <td><input asp-for="RecordType" readonly /></td>
+            </tr>
+            <tr>
+                <th><label asp-for="RecordId"></label></th>
+                <td><input asp-for="RecordId" /></td>
+                <td><span asp-validation-for="RecordId"></span></td>
+            </tr>
+            <tr>
+                <th><label asp-for="DistributionStatus"></label></th>
+                <td><input asp-for="DistributionStatus" /></td>
+                <td><span asp-validation-for="DistributionStatus"></span></td>
+            </tr>
+            <tr>
+                <th><label asp-for="DOD"></label></th>
+                <td><input asp-for="DOD" /></td>
+                <td><span asp-validation-for="DOD"></span></td>
+            </tr>
+            <tr>
+                <input name="DistributorId" value="@UserAccount?.Id" hidden />
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align:center">
+                    <button type="submit" class="btn-info">
+                        Update Schedule
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</center>
+
