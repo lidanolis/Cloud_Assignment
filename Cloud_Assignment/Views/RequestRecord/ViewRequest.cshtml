@@ -1,0 +1,113 @@
+﻿@model List<FoodRequest>
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Cloud_AssignmentUser> UserManager
+
+@{
+    ViewData["Title"] = "Food Donation Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var UserAccount = await UserManager.GetUserAsync(User);
+}
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        min-width: 400px;
+        border-radius: 5px 5px 0 0;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #009879;
+        color: #ffffff;
+        text-transform: uppercase;
+    }
+
+    tr {
+        border-bottom: 1px solid #dddddd;
+    }
+
+        tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
+
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+    }
+
+        .action-buttons form, .action-buttons button {
+            margin-right: 10px;
+        }
+
+        .action-buttons button {
+            padding: 5px 10px;
+            background-color: #009879;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+            .action-buttons button:hover {
+                background-color: #007961;
+            }
+</style>
+
+<center>
+    <h1>Food Request Status Management</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>User ID</th>
+                <th>Contact Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Request Date</th>
+                <th>Request Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.RequestID</td>
+                    <td>@item.UserId</td>
+                    <td>@item.ContactName</td>
+                    <td>@item.Phone</td>
+                    <td>@item.Email</td>
+                    <td>@item.RequestDate.ToString("yyyy-MM-dd")</td>
+                    <td>@item.RequestStatus</td>
+                    @if (item.RequestStatus == "pending") {
+                    <td class="action-buttons">
+                        <form asp-action="EditRequest" asp-route-RequestID="@item.RequestID" method="post">
+                            <button type="submit">Edit</button>
+                        </form>
+                        <form asp-action="DeleteRequest" asp-route-RequestID="@item.RequestID" method="post">
+                            <button type="submit" class="btn-delete" style="background-color: #ff2121">Delete</button>
+                        </form>
+                    </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</center>

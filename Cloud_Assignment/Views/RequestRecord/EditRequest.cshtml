@@ -1,0 +1,102 @@
+﻿@model Cloud_Assignment.Models.FoodRequest
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Cloud_AssignmentUser> UserManager
+
+@{
+	ViewData["Title"] = "CreateFoodDonation";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var UserAccount = await UserManager.GetUserAsync(User);
+}
+
+<!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+	<div class="row">
+		<div class="col-md-8 offset-md-2">
+			<h1 class="text-center">Edit Food Request Status</h1>
+			<hr />
+			<form asp-action="UpdateRequest" method="post">
+				<div class="form-group">
+					<label asp-for="RequestID">Request Id</label>
+					<input asp-for="RequestID" class="form-control" readonly />
+				</div>
+				<div class="form-group">
+					<label asp-for="UserId">User Id</label>
+					<input asp-for="UserId" class="form-control" readonly />
+				</div>
+				<div class="form-group">
+					<label asp-for="ContactName">Contact Name</label>
+					<input asp-for="ContactName" class="form-control" readonly />
+				</div>
+				<div class="form-group">
+					<label asp-for="Phone">Phone</label>
+					<input asp-for="Phone" class="form-control" readonly />
+				</div>
+				<div class="form-group">
+					<label asp-for="Email">Email</label>
+					<input asp-for="Email" class="form-control" readonly />
+				</div>
+				<div class="form-group">
+					<label asp-for="Address">Address</label>
+					<input asp-for="Address" class="form-control" readonly />
+				</div>
+				<div class="form-group">
+					<label asp-for="Adults">Number of Adults</label>
+					<input asp-for="Adults" class="form-control" readonly />
+				</div>
+				<div class="form-group">
+					<label asp-for="Children">Number of Children</label>
+					<input asp-for="Children" class="form-control" readonly />
+				</div>
+				<div class="form-group">
+					<label asp-for="SpecialNeeds">Special Needs</label>
+					<textarea asp-for="SpecialNeeds" class="form-control" readonly></textarea>
+				</div>
+				<div class="form-group">
+					<label asp-for="FoodType">Preferred Food Type</label>
+					<textarea asp-for="FoodType" class="form-control" readonly></textarea>
+				</div>
+				<div class="form-group">
+					<label asp-for="DietaryRestrictions">Dietary Restrictions</label>
+					<textarea asp-for="DietaryRestrictions" class="form-control" readonly></textarea>
+				</div>
+				<div class="form-group">
+					<label asp-for="DeliveryDate">Preferred Delivery Date</label>
+					<input type="date" asp-for="DeliveryDate" class="form-control" readonly />
+				</div>
+				<div class="form-group">
+					<label asp-for="RequestDate">Request Date</label>
+					<input type="date" asp-for="RequestDate" class="form-control" readonly />
+				</div>
+				<div class="form-group">
+					<label asp-for="RequestStatus">Change Status</label>
+					<select asp-for="RequestStatus" class="form-control">
+						<option value="accept">accept</option>
+						<option value="deny">deny</option>
+						<option value="pending">pending</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<div class="text-center">
+						<button type="submit" class="btn btn-info">Save</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<fieldset></fieldset>
+				</div>
+				<div class="form-group">
+					<fieldset></fieldset>
+				</div>
+				<div class="form-group">
+					<fieldset></fieldset>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

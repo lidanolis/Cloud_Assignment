@@ -1,0 +1,163 @@
+﻿@model List<InventoryRecord>
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Cloud_AssignmentUser> UserManager
+
+@{
+	ViewData["Title"] = "CreateFoodDonation";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var UserAccount = await UserManager.GetUserAsync(User);
+}
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Food Bank Request Form</title>
+	<style>
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			background-color: #f4f4f4;
+			color: #333;
+			line-height: 1.6;
+			margin: 0;
+			padding: 0;
+		}
+
+		.header {
+			background: linear-gradient(to right, #6dd5ed, #2193b0);
+			color: #fff;
+			padding: 20px 0;
+			text-align: center;
+		}
+
+		.form-section {
+			background: white;
+			width: 60%;
+			margin: 30px auto;
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+		}
+
+		form {
+			display: grid;
+			grid-gap: 20px;
+		}
+
+		fieldset {
+			border: none;
+			padding: 5px 0;
+		}
+
+		legend {
+			font-size: 1.4em;
+			margin-bottom: 15px;
+			color: #2193b0;
+		}
+
+		label {
+			display: block;
+			margin: 10px 0 5px;
+		}
+
+
+		input[type="text"],
+		input[type="email"],
+		input[type="tel"],
+		input[type="number"],
+		select,
+		textarea {
+			width: 100%;
+			padding: 10px;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+		}
+
+		input[type="submit"] {
+			background: #2193b0;
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 4px;
+			cursor: pointer;
+			transition: background 0.3s ease;
+		}
+
+			input[type="submit"]:hover {
+				background: #6dd5ed;
+			}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Food Request Form</h1>
+		<form method="post" asp-action="AddFoodRequest">
+			<fieldset>
+				<legend>Basic Information</legend>
+				<input name="UserId" value="@UserAccount?.Id" hidden /></td>
+				<label for="ContactName" style="font-weight: bold;"> Contact Name:</label>
+				<input type="text" name="ContactName" id="ContactName" value="@UserAccount?.UserFullName" required>
+				<label for="phone" style="font-weight: bold;">Phone:</label>
+				<input type="tel" id="phone" name="Phone" value="@UserAccount?.PhoneNumber" required>
+				<label for="email" style="font-weight: bold;">Email:</label>
+				<input type="email" id="email" name="Email" value="@UserAccount?.Email" required>
+				<label for="address" style="font-weight: bold;">Address:</label>
+				<input type="text" id="address" name="Address" value="@UserAccount?.UserAddress" required>
+			</fieldset>
+
+			<fieldset>
+				<legend>Household Size</legend>
+				<label for="adults" style="font-weight: bold;">Number of Adults:</label>
+				<input type="number" id="adults" name="Adults" min="0" required>
+				<label for="children" style="font-weight: bold;">Number of Children:</label>
+				<input type="number" id="children" name="Children" min="0" required>
+				<label for="special-needs" style="font-weight: bold;">Special Needs (If you have an infant or a family member with a special medical condition.):</label>
+				<textarea id="special-needs" name="SpecialNeeds"></textarea>
+			</fieldset>
+
+			<fieldset>
+				<legend>Food Preferences and Restrictions</legend>
+				<label for="food-type" style="font-weight: bold;">Preferred Food Type: (Such as non-perishable food, canned food, fresh fruits and vegetables, meat, dairy products, etc.)</label>
+				<textarea id="food-type" name="FoodType"></textarea>
+				<label for="dietary-restrictions" style="font-weight: bold;">Dietary Restrictions: (Such as vegetarian, gluten-free, lactose-free, etc.)</label>
+				<textarea id="dietary-restrictions" name="DietaryRestrictions"></textarea>
+			</fieldset>
+
+			<fieldset>
+				<legend>Delivery Options</legend>
+				<label for="delivery-date" style="font-weight: bold;">Preferred Delivery Date:</label>
+				<input type="date" id="delivery-date" name="DeliveryDate" required>
+			</fieldset>
+
+			<input type="submit" id="submit">
+
+			<fieldset>
+			</fieldset>
+			<fieldset>
+			</fieldset>
+		</form>
+	</div>
+</body>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		document.getElementById('delivery-date').setAttribute('min', new Date().toISOString().split('T')[0]);
+
+		['ContactName', 'phone', 'email', 'address'].forEach(function (id) {
+			var element = document.getElementById(id);
+			var defaultValue = element.value;
+			element.addEventListener('focus', function () {
+				if (element.value === defaultValue) {
+					element.value = '';
+				}
+			});
+			element.addEventListener('blur', function () {
+				if (element.value === '') {
+					element.value = defaultValue;
+				}
+			});
+		});
+	});
+</script>
+
