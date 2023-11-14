@@ -6,6 +6,7 @@
     var UserAccount = await UserManager.GetUserAsync(User);
 }
 
+<button onclick="Back()">Back</button>
 <center>
     <h1>Edit Distribution Schedule:</h1>
     <br/><hr/><br/>
@@ -14,10 +15,12 @@
             <tr>
                 <th><label asp-for="DistributionId"></label></th>
                 <td><input asp-for="DistributionId" readonly /></td>
+                <td><span asp-validation-for="DistributionId"></span></td>
             </tr>
             <tr>
                 <th><label asp-for="RecordType"></label></th>
                 <td><input asp-for="RecordType" readonly /></td>
+                <td><span asp-validation-for="RecordType"></span></td>
             </tr>
             <tr>
                 <th><label asp-for="RecordId"></label></th>
@@ -26,7 +29,11 @@
             </tr>
             <tr>
                 <th><label asp-for="DistributionStatus"></label></th>
-                <td><input asp-for="DistributionStatus" /></td>
+                <td><select asp-for="DistributionStatus" id="distributionstatus">
+                        <option value="Pending" >Pending</option>
+                        <option value="Deliverd" >Deliverd</option>
+                    </select>
+                </td>
                 <td><span asp-validation-for="DistributionStatus"></span></td>
             </tr>
             <tr>
@@ -48,3 +55,20 @@
     </form>
 </center>
 
+<script>
+    function Back() {
+        var previousPage = '@(Context.Request.Headers["Referer"].ToString())';
+        window.location.href = previousPage;
+    }
+
+    var isDeliverd = true;
+    var dropdown = document.getElementById("distributionstatus");
+    if (@Model.DistributionStatus == "Pending") {
+        var isDeliverd = false;
+    }
+    if (isDeliverd) {
+        dropdown.value = "Deliverd";
+    } else {
+        dropdown.ariaValueMax = "Pending";
+    }
+</script>

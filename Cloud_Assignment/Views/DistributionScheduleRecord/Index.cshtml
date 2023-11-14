@@ -1,35 +1,30 @@
-﻿@model List<DistributionSchedule>
+﻿@model List<RequestRecord>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index";   
 }
 
 <h1>Distribution Schedule Management Page</h1>
-<p><a asp-action="AddDistributionScheduleRecord">Schedule Distribution</a></p>
+<p><a asp-action="AddDistributionScheduleRecord">Schedule Distribution</a>
+<a asp-action="ViewScheduleRecord">View Distribution Schedule Record</a></p>
+<h1>Food Request Table</h1>
+
 <center>
     <table border="1">
         <tr style="background-color: yellow;">
-            <th>Distribution ID</th>
-            <th>Record Type</th>
             <th>Record ID</th>
-            <th>Distribution Status</th>
-            <th>Date of Delivery</th>
-            <th>Distributor ID</th>
+            <th>Request Type</th>
+            <th>Request Date</th>
+            <th>Request Status</th>
+            <th>Requestor</th>
         </tr>
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.DistributionId</td>
-                <td>@item.RecordType</td>
                 <td>@item.RecordId</td>
-                <td>@item.DistributionStatus</td>
-                <td>@item.DOD</td>
-                <td>@item.DistributorId</td>
-                <form asp-action="DeleteDistributionRecord" asp-controller="DistributionScheduleRecord" asp-route-DistributionId="@item.DistributionId">
-                <td><button>Delete</button></td>
-                </form>
-                <form asp-action="EditDistributionScheduleRecord" asp-controller="DistributionScheduleRecord" asp-route-DistributionId="@item.DistributionId">
-                    <td><button>Edit</button></td>
-                </form>
+                <td>@item.requestType</td>
+                <td>@item.DOR</td>
+                <td>@item.RequestStatus</td>
+                <td>@item.User?.UserFullName</td>
             </tr>
         }
     </table>

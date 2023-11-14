@@ -2,26 +2,34 @@
 using Cloud_Assignment.Models;
 using Cloud_Assignment.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Cloud_Assignment.Controllers
 {
     public class DistributionScheduleRecordController : Controller
     {
         private readonly Cloud_AssignmentContext _context;
-
         public DistributionScheduleRecordController(Cloud_AssignmentContext context)
         {
             _context = context;
         }
         public async Task<IActionResult> Index()
         {
-            List<DistributionSchedule> record = await _context.DistributionSchedule.ToListAsync();
-            return View(record);
+            List<RequestRecord> records = await _context.RequestRecord.ToListAsync();
+            return View(records);
         }
 
-        public IActionResult AddDistributionScheduleRecord()
+        public async Task<IActionResult> AddDistributionScheduleRecord()
         {
+            var recordId = await _context.RequestRecord.Select(r=>r.RecordId).ToListAsync();
+            ViewBag.RecordId = new SelectList(recordId);
             return View();
+        }
+
+        public async Task<IActionResult> ViewScheduleRecord()
+        {
+            List<DistributionSchedule> record = await _context.DistributionSchedule.ToListAsync();
+            return View(record);
         }
 
         public async Task<IActionResult> EditDistributionScheduleRecord(int ? DistributionId)

@@ -1,12 +1,15 @@
 ﻿@model Cloud_Assignment.Models.DistributionSchedule
 @using Cloud_Assignment.Areas.Identity.Data
 @using Microsoft.AspNetCore.Identity
+@using Cloud_Assignment.Models;
+@using Cloud_Assignment.Data;
 @inject UserManager<Cloud_AssignmentUser> UserManager
 
 @{
     var UserAccount = await UserManager.GetUserAsync(User);
 }
 
+<button onclick="Back()">Back</button>
 <center>
     <h1>Add Distribution Schedule Record</h1>
     <hr />
@@ -19,7 +22,10 @@
             </tr>
             <tr>
                 <th><label asp-for="RecordId"></label> </th>
-                <td><input asp-for="RecordId" /></td>
+                <td><select asp-for="RecordId" asp-items="ViewBag.RecordIds">
+                        <option value="">Select an ID</option>        
+                    </select>
+                </td>
                 <td><span asp-validation-for="RecordId"></span></td>
             </tr>
             <tr>
@@ -44,3 +50,9 @@
     </form>
 </center>
 
+<script>
+    function Back() {
+        var previousPage = '@(Context.Request.Headers["Referer"].ToString())';
+        window.location.href = previousPage;
+    }
+</script>
