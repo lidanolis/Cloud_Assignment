@@ -1,0 +1,44 @@
+﻿@model List<FoodRecord>
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Cloud_AssignmentUser> UserManager
+
+@{
+    ViewData["Title"] = "EditFoodDonationRecord";
+    var tableStyle = "border-collapse: collapse; width: 100%;";
+    var cellStyle = "border: 1px solid #000000; padding: 8px; text-align: left;";
+    var headerStyle = "background-color: yellow;";
+    var UserAccount = await UserManager.GetUserAsync(User);
+}
+
+<div class="table-responsive" style="border: 1px solid #000000;">
+    <table style="@tableStyle">
+        <tr style="@headerStyle">
+            <th style="@cellStyle">Record ID</th>
+            <th style="@cellStyle">Record Type</th>
+            <th style="@cellStyle">User Name</th>
+            <th style="@cellStyle">Food ID</th>
+            <th style="@cellStyle">Food Quantity</th>
+            <th style="@cellStyle">DOR</th>
+            <th style="@cellStyle">Description</th>
+            <th style="@cellStyle">Update Action</th>
+            <th style="@cellStyle">Delete Action</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="@cellStyle">@item.RecordId</td>
+                <td style="@cellStyle">@item.RecordType</td>
+                <td style="@cellStyle">@UserAccount?.UserFullName</td>
+                <td style="@cellStyle">@item.FoodId</td>
+                <td style="@cellStyle">@item.FoodQuantity</td>
+                <td style="@cellStyle">@item.DOR</td>
+                <td style="@cellStyle">@item.Description</td>
+                <form asp-action="DeleteFoodDonationRecord" asp-controller="Donation" asp-route-RecordId="@item.RecordId">
+                <td style="@cellStyle"><button>Delete</button></td>
+                <td style="@cellStyle"><button asp-action="EditFoodDonationRecord" asp-controller="Donation" asp-route-RecordId="@item.RecordId">Edit</button></td>
+                </form>
+            </tr>
+        }
+    </table>
+</div>
