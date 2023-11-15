@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Cloud_Assignment.Areas.Identity.Data
+@inject UserManager<Cloud_AssignmentUser> UserManager
+@{
+    ViewData["Title"] = "removeAccount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userAccount = await UserManager.GetUserAsync(User);
+}
+
+<h1>Delete Account</h1>
+<h2>Are You Sure You Want To Delete Your Account?</h2>
+<br/>
+<br />
+<center>
+    <form asp-controller="Profile" asp-action="deleteAccount" method="post">
+        <table>
+            <tr>
+                <th><label>User Information</label></th>
+                <td><input name="UserFullName" value="@userAccount?.UserFullName" readonly /></td>
+                <td><input name="UserId" value="@userAccount.Id" hidden /></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" id="submitbutton" name="submit" asp-controller="Profile" asp-action="Index" value="CANCEL DELETION" />
+                </td>
+                <td>
+                    <input type="submit" id="submitbutton" name="submit" value="DELETE ACCOUNT" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</center>
+<br />
+<br />
+
