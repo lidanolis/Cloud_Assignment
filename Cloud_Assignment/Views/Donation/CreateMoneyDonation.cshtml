@@ -17,16 +17,99 @@
     }
 }
 <style>
-    .DonationHistoryTable {
-        margin: 10px;
-        width: 100%;
-        border-collapse: collapse;
-        border: 2px solid #000; /* Adjust the border color and width as needed */
+    h1 {
+        font-size: 40px;
+        color: black;
+        text-shadow: 2px 2px white;
     }
 
-    .tHistoryTable {
-        border: 1px solid #000; /* Adjust the border color and width as needed */
-        padding: 8px; /* Adjust the padding as needed */
+    h2 {
+        text-shadow: 2px 2px white;
+        font-size: 35px;
+        color: black;
+        margin-top: 0;
+        margin-bottom: 8px;
+        border-bottom: 2px solid white;
+        padding-bottom: 4px;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+    }
+
+    table {
+        width: 100%;
+        margin: 25px 0;
+        font-size: 0.9em;
+        min-width: 400px;
+        border-radius: 5px 5px 0 0;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #2d8bba;
+        color: #ffffff;
+        text-transform: uppercase;
+    }
+
+    tr {
+        background-color: white;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+    }
+
+        .action-buttons form, .action-buttons button {
+            margin-right: 10px;
+        }
+
+        .action-buttons button {
+            padding: 5px 10px;
+            background-color: #2d8bba;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+    .errorBox {
+        background-color: red;
+        text-align: center;
+        color: white;
+    }
+
+    .allwhilte {
+        background-color: white;
+    }
+
+    .actbtn {
+        text-decoration: none;
+        padding: 0.5rem;
+        border: 1px solid #333333;
+        border-radius: 10px;
+        background-color: #F0F8FF;
+    }
+
+        .actbtn:hover {
+            background-color: #9966FF;
+            color: #FFFFFF;
+        }
+
+    .textboxdsg {
+        width: 100%;
+        padding: 10px; /* Add padding to the textbox */
+        border: 1px solid #ccc; /* Add a border to the textbox */
+        border-radius: 5px; /* Add rounded corners */
+        color: #333; /* Set the text color */
+        font-size: 14px; /* Set the font size */
     }
 
     .errorBox {
@@ -39,18 +122,18 @@
 <h1>Create Money Donation</h1>
 @if (FinancialRecords.Count >= 1)
 {
-    <table border="1" class="DonationHistoryTable">
+    <table border="1" class="allwhite">
         <tr>
-            <th class="tHistoryTable"><label>Currency</label></th>
-            <th class="tHistoryTable"><label>Amount</label></th>
-            <th class="tHistoryTable"><label>Money Donation Date</label></th>
+            <th><label>Currency</label></th>
+            <th ><label>Amount</label></th>
+            <th ><label>Money Donation Date</label></th>
         </tr>
         @foreach (var item in FinancialRecords)
         {
             <tr>
-                <td class="tHistoryTable">@item.CurrencyType</td>
-                <td class="tHistoryTable">@item.Amount</td>
-                <td class="tHistoryTable">@item.DOR</td>
+                <td >@item.CurrencyType</td>
+                <td >@item.Amount</td>
+                <td>@item.DOR</td>
             </tr>
         }
     </table>
@@ -59,11 +142,11 @@
 }
 
 <center>
-    <form onsubmit="validateCredentials(event)" asp-action="AddMoneyDonation" method="post">
+    <form class="allwhite" onsubmit="validateCredentials(event)" asp-action="AddMoneyDonation" method="post">
         <table>
             <tr>
                 <th><label>User Information</label></th>
-                <td><input name="UserFullName" value="@UserAccount?.UserFullName" readonly /></td>
+                <td><input class="textboxdsg" name="UserFullName" value="@UserAccount?.UserFullName" readonly /></td>
                 <td><input name="UserId" value="@UserAccount?.Id" hidden /></td>
             </tr>
 
@@ -72,16 +155,23 @@
                     <label>Amount:</label>
                 </th>
                 <td>
-                    <input type="number" id="MoneyAmountInput" name="Amount" min="0" step="0.01" pattern="\d+(\.\d{1,2})?" oninput="validity.valid || (value = '');">
+                    <input class="textboxdsg" type="number" id="MoneyAmountInput" name="Amount" min="0" step="0.01" pattern="\d+(\.\d{1,2})?" oninput="validity.valid || (value = '');">
                 </td>
+                <td></td>
             </tr>
             <tr>
+                <th>
+                    <label>Action:</label>
+                </th>
                 <td>
-                    <input type="submit" id="submitbutton" name="submit" value="DONATE" />
+                    <input class ="actbtn" type="submit" id="submitbutton" name="submit" value="DONATE" />
                 </td>
+                <td></td>
             </tr>
             <tr>
+                <td></td>
                 <td><div id="resultContainer"></div></td>
+                <td></td>
             </tr>
         </table>
     </form>

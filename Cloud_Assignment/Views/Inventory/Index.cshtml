@@ -19,22 +19,99 @@
 
 }
 <style>
-    .DonationHistoryTable {
-        margin: 10px;
+    h1 {
+        font-size: 40px;
+        color: black;
+        text-shadow: 2px 2px white;
+    }
+
+    h2 {
+        text-shadow: 2px 2px white;
+        font-size: 35px;
+        color: black;
+        margin-top: 0;
+        margin-bottom: 8px;
+        border-bottom: 2px solid white; 
+        padding-bottom: 4px;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+    }
+
+    table {
         width: 100%;
-        border-collapse: collapse;
-        border: 2px solid #000; /* Adjust the border color and width as needed */
+        margin: 25px 0;
+        font-size: 0.9em;
+        min-width: 400px;
+        border-radius: 5px 5px 0 0;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     }
 
-    .tHistoryTable {
-        border: 1px solid #000; /* Adjust the border color and width as needed */
-        padding: 8px; /* Adjust the padding as needed */
-    }
-
-    .errorBox {
-        background-color: red;
+    th, td {
+        padding: 12px 15px;
         text-align: center;
-        color: white;
+    }
+
+    th {
+        background-color: #2d8bba;
+        color: #ffffff;
+        text-transform: uppercase;
+    }
+
+    tr {
+        background-color: white;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+    }
+
+        .action-buttons form, .action-buttons button {
+            margin-right: 10px;
+        }
+
+        .action-buttons button {
+            padding: 5px 10px;
+            background-color: #2d8bba;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .errorBox {
+            background-color: red;
+            text-align: center;
+            color: white;
+        }
+
+        .allwhilte{
+        background-color: white;
+        }
+
+    .actbtn {
+        text-decoration: none;
+        padding: 0.5rem;
+        border: 1px solid #333333;
+        border-radius: 10px;
+        background-color: #F0F8FF;
+    }
+
+        .actbtn:hover {
+            background-color: #9966FF;
+            color: #FFFFFF;
+        }
+
+    .textboxdsg{
+        width:100%;
+        padding: 10px; /* Add padding to the textbox */
+        border: 1px solid #ccc; /* Add a border to the textbox */
+        border-radius: 5px; /* Add rounded corners */
+        color: #333; /* Set the text color */
+        font-size: 14px; /* Set the font size */
     }
 
 </style>
@@ -42,30 +119,29 @@
 <h2>-FOOD-</h2>
 @if (Model.FoodList.Count >= 1)
 {
-        <table border="1" class="DonationHistoryTable">
+        <table border="1">
             <tr>
-                <th class="tHistoryTable"><label>Food Id</label></th>
-                <th class="tHistoryTable"><label>Food Name</label></th>
-                <th class="tHistoryTable"><label>Food Total</label></th>
-                <th class="tHistoryTable"><label>Food Description</label></th>
-                <th class ="tHistoryTable"><label></label></th>
-                <th class="tHistoryTable"><label></label></th>
+                <th ><label>Food Id</label></th>
+                <th ><label>Food Name</label></th>
+                <th ><label>Food Total</label></th>
+                <th ><label>Food Description</label></th>
+                <th><label></label></th>
             </tr>
             @foreach (var item in Model.FoodList)
             {
                 <tr>
-                    <td class="tHistoryTable">@item.FoodId</td>
-                    <td class="tHistoryTable">@item.FoodName</td>
-                    <td class="tHistoryTable">@item.FoodTotal</td>
-                    <td class="tHistoryTable">@item.FoodDesc</td>
+                    <td >@item.FoodId</td>
+                    <td >@item.FoodName</td>
+                    <td >@item.FoodTotal</td>
+                    <td >@item.FoodDesc</td>
+                <td class="action-buttons">
                     <form asp-action="EditInventory" asp-controller="Inventory" asp-route-foodId="@item.FoodId">
-                        <td class="tHistoryTable">
                             <button>EDIT</button>
-                        </td>
-                        <td class="tHistoryTable">
-                    <button asp-action="RemoveInventory" asp-controller="Inventory" asp-route-fdId="@item.FoodId">REMOVE</button>
-                        </td>
+
+                    <button asp-action="RemoveInventory" asp-controller="Inventory" asp-route-fdId="@item.FoodId" style="background-color:red;">REMOVE</button>
+
                     </form>
+                </td>
                 </tr>
             }
         </table>
@@ -73,30 +149,30 @@
     <br />
 }
 
-<center>
+<center class="allwhilte">
     <form onsubmit="validateDonationCredentials(event)" asp-action="AddFoodDonation" method="post">
         <table>
             <tr>
                 <th><label>User Information</label></th>
-                <td><input name="UserFullName" value="@UserAccount?.UserFullName" readonly /></td>
+                <td><input class="textboxdsg" name="UserFullName" value="@UserAccount?.UserFullName" readonly /></td>
                 <td><input name="UserId" value="@UserAccount?.Id" hidden /></td>
             </tr>
             <tr>
                 <th><label for="DonationOptions">Inventory options:</label></th>
                 <td>
-                    <select onchange="showControls(this)">
+                    <select class="textboxdsg" onchange="showControls(this)">
                         <option value="ModifyExisting" selected>Modify Existing Food Type</option>
                         <option value="ModifyOther">Create New Food Type</option>
                     </select>
                 </td>
-                <td><input type="hidden" name="DonationOptions" id="DonationOptions" value="ModifyExisting" /></td>
+                <td><input class="textboxdsg" type="hidden" name="DonationOptions" id="DonationOptions" value="ModifyExisting" /></td>
             </tr>
 
             @*  ////  *@
             <tr>
                 <th><label>Food Type</label></th>
                 <td id="existingFoodType">
-                    <select id="existingFoodTypeComboBox" name="FoodId" @(Model.FoodList.Count == 0 ? "disabled" : null)>
+                    <select class="textboxdsg" id="existingFoodTypeComboBox" name="FoodId" @(Model.FoodList.Count == 0 ? "disabled" : null)>
                         @foreach (var item in Model.FoodList)
                         {
                             <option value="@item.FoodId">@item.FoodName</option>
@@ -104,7 +180,7 @@
                     </select>
                 </td>
                 <td id="newFoodType" hidden>
-                    <input type="text" name="FoodType" id="foodType" />
+                    <input class="textboxdsg" type="text" name="FoodType" id="foodType" />
                 </td>
             </tr>
             @*  ////  *@
@@ -114,7 +190,7 @@
                     <label for="FoodDesc">Food Description</label>
                 </th>
                 <td>
-                    <input id="newFoodDescTextBox" type="text" name="FoodDesc" />
+                    <input class="textboxdsg" id="newFoodDescTextBox" type="text" name="FoodDesc" />
                 </td>
             </tr>
 
@@ -122,7 +198,7 @@
             <tr id="ManageDonationType">
                 <th><label for="ManageDonationType">Manage Donations</label></th>
                 <td>
-                    <select name="ManageDonationType" onchange="modifyDonation(this)">
+                    <select class="textboxdsg" name="ManageDonationType" onchange="modifyDonation(this)">
 
                         <option value="Modify" selected>Modify To</option>
                         <option value="Increase">Increase BY</option>
@@ -130,14 +206,14 @@
 
                     </select>
                 </td>
-                <td><input type="hidden" name="selectedDonationOption" id="selectedDonationOption" value="Modify" /></td>
+                <td><input class="textboxdsg" type="hidden" name="selectedDonationOption" id="selectedDonationOption" value="Modify" /></td>
             </tr>
             <tr>
                 <th>
                     <label>Food Quantity</label>
                 </th>
                 <td>
-                    <input type="number" id="FoodQuantityInput" name="FoodQuantityInput" min="0" step="1" pattern="\d*" oninput="validity.valid || (value = '');">
+                    <input class="textboxdsg" type="number" id="FoodQuantityInput" name="FoodQuantityInput" min="0" step="1" pattern="\d*" oninput="validity.valid || (value = '');">
                 </td>
             </tr>
             @*  ////  *@
@@ -146,20 +222,20 @@
                     <label for="ModificationDesc">Reason Of Modification</label>
                 </th>
                 <td>
-                    <input id="ModificationDesc" type="text" name="ModificationDesc" />
+                    <input class="textboxdsg" id="ModificationDesc" type="text" name="ModificationDesc" />
                 </td>
             </tr>
 
             <tr>
                 <td>
-                    <input type="number" id="PassedDonationAmount" name="PassedDonationAmount" min="0" step="0.01" pattern="\d+(\.\d{1,2})?" oninput="validity.valid || (value = '');" value="0" hidden>
+                    <input class="textboxdsg" type="number" id="PassedDonationAmount" name="PassedDonationAmount" min="0" step="0.01" pattern="\d+(\.\d{1,2})?" oninput="validity.valid || (value = '');" value="0" hidden>
 
                 </td>
-                <td><input type="hidden" id="PassedDonationType" name="PassedDonationType" value="Modify" /></td>
+                <td><input class="textboxdsg" type="hidden" id="PassedDonationType" name="PassedDonationType" value="Modify" /></td>
             </tr>
             <tr>
                 <td>
-                    <input type="submit" id="submitbutton" name="submit" value="UPDATE" />
+                    <input class="actbtn" type="submit" id="submitbutton" name="submit" value="UPDATE" />
                 </td>
             </tr>
             <tr>
@@ -174,32 +250,32 @@
 <h2>-MONEY-</h2>
 @if (SpecificFinancial != null)
 {
-    <table border="1" class="DonationHistoryTable">
+    <table border="1">
         <tr>
-            <th class="tHistoryTable"><label>Currency Type</label></th>
-            <th class="tHistoryTable"><label>Balance</label></th>
+            <th ><label>Currency Type</label></th>
+            <th ><label>Balance</label></th>
         </tr>
         <tr>
-            <td class="tHistoryTable">@SpecificFinancial.CurrencyType</td>
-            <td class="tHistoryTable">@SpecificFinancial.Balance</td>
+            <td >@SpecificFinancial.CurrencyType</td>
+            <td >@SpecificFinancial.Balance</td>
         </tr>
     </table>
     <br />
     <br />
 }
 
-<center>
+<center class="allwhilte">
     <form onsubmit="validateFinancialCredentials(event)" asp-action="AddMoneyDonation" method="post">
         <table>
             <tr>
                 <th><label>User Information</label></th>
-                <td><input name="UserFullName" value="@UserAccount?.UserFullName" readonly /></td>
+                <td><input class="textboxdsg" name="UserFullName" value="@UserAccount?.UserFullName" readonly /></td>
                 <td><input name="UserId" value="@UserAccount?.Id" hidden /></td>
             </tr>
             <tr>
                 <th><label for="Financetype">Manage Finance</label></th>
                 <td>
-                    <select name="Financetype" onchange="modifyFinance(this)">
+                    <select class="textboxdsg" name="Financetype" onchange="modifyFinance(this)">
 
                         <option value="Modify" selected>Modify To</option>
                         <option value="Increase">Increase BY</option>
@@ -215,7 +291,7 @@
                     <label>Amount:</label>
                 </th>
                 <td>
-                    <input type="number" id="MoneyAmountInput" name="Amount" min="0" step="0.01" pattern="\d+(\.\d{1,2})?" oninput="validity.valid || (value = '');">
+                    <input class="textboxdsg" type="number" id="MoneyAmountInput" name="Amount" min="0" step="0.01" pattern="\d+(\.\d{1,2})?" oninput="validity.valid || (value = '');">
                 </td>
             </tr>
             <tr>
@@ -223,13 +299,13 @@
                     <label>Reason Of Change</label>
                 </th>
                 <td>
-                    <input id="ChangeDesc" type="text" name="ChangeDesc" />
+                    <input class="textboxdsg" id="ChangeDesc" type="text" name="ChangeDesc" />
 
                 </td>
             </tr>
             <tr>
                 <td>
-                    <input type="number" id="PassedAmount" name="PassedAmount" min="0" step="0.01" pattern="\d+(\.\d{1,2})?" oninput="validity.valid || (value = '');" value="0" hidden>
+                    <input class="textboxdsg" type="number" id="PassedAmount" name="PassedAmount" min="0" step="0.01" pattern="\d+(\.\d{1,2})?" oninput="validity.valid || (value = '');" value="0" hidden>
 
                 </td>
                 <td><input type="hidden" id="PassedType" name="PassedType" value="Modify" /></td>
@@ -237,7 +313,7 @@
             </tr>
             <tr>
                 <td>
-                    <input type="submit" id="submitbutton" name="submit" value="UPDATE" />
+                    <input class="actbtn" type="submit" id="submitbutton" name="submit" value="UPDATE" />
                 </td>
             </tr>
             <tr>

@@ -7,24 +7,120 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var UserAccount = await UserManager.GetUserAsync(User);
 }
+<style>
+    h1 {
+        font-size: 40px;
+        color: black;
+        text-shadow: 2px 2px white;
+    }
 
+    h2 {
+        text-shadow: 2px 2px white;
+        font-size: 35px;
+        color: black;
+        margin-top: 0;
+        margin-bottom: 8px;
+        border-bottom: 2px solid white;
+        padding-bottom: 4px;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+    }
+
+    table {
+        width: 100%;
+        margin: 25px 0;
+        font-size: 0.9em;
+        min-width: 400px;
+        border-radius: 5px 5px 0 0;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #2d8bba;
+        color: #ffffff;
+        text-transform: uppercase;
+    }
+
+    tr {
+        background-color: white;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+    }
+
+        .action-buttons form, .action-buttons button {
+            margin-right: 10px;
+        }
+
+        .action-buttons button {
+            padding: 5px 10px;
+            background-color: #2d8bba;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+    .errorBox {
+        background-color: red;
+        text-align: center;
+        color: white;
+    }
+
+    .allwhilte {
+        background-color: white;
+    }
+
+    .actbtn {
+        text-decoration: none;
+        padding: 0.5rem;
+        border: 1px solid #333333;
+        border-radius: 10px;
+        background-color: #F0F8FF;
+    }
+
+        .actbtn:hover {
+            background-color: #9966FF;
+            color: #FFFFFF;
+        }
+
+    .textboxdsg {
+        width: 100%;
+        padding: 10px; /* Add padding to the textbox */
+        border: 1px solid #ccc; /* Add a border to the textbox */
+        border-radius: 5px; /* Add rounded corners */
+        color: #333; /* Set the text color */
+        font-size: 14px; /* Set the font size */
+    }
+
+</style>
 <h1>Edit Inventory</h1>
 
 <center>
     <form asp-action="UpdateInventory" method="post">
-        <table border="1" class="DonationHistoryTable">
+        <table border="1">
             <tr>
-                <th class="tHistoryTable"><label>Food Id</label></th>
-                <th class="tHistoryTable"><label>Food Name</label></th>
-                <th class="tHistoryTable"><label>Food Description</label></th>
-                <th class="tHistoryTable"><label></label></th>
+                <th ><label>Food Id</label></th>
+                <th ><label>Food Name</label></th>
+                <th ><label>Food Description</label></th>
+                <th ><label></label></th>
             </tr>
                 <tr>
-                <td class="tHistoryTable"><input name="FoodId" value="@Model.FoodId" readonly /></td>
-                <td class="tHistoryTable"><input name="FoodName" value="@Model.FoodName" /></td>
-                <td class="tHistoryTable"><input name="FoodDesc" value="@Model.FoodDesc" /></td>
-                    <td class="tHistoryTable">
-                        <input type="submit" id="submitbutton" name="submit" value="UPDATE" />
+                <td><input class="textboxdsg" name="FoodId" value="@Model.FoodId" readonly /></td>
+                <td><input class="textboxdsg" name="FoodName" value="@Model.FoodName" /></td>
+                <td><input class="textboxdsg" name="FoodDesc" value="@Model.FoodDesc" /></td>
+                    <td>
+                    <input class="actbtn" type="submit" id="submitbutton" name="submit" value="UPDATE" />
                     </td>
 
                 </tr>
