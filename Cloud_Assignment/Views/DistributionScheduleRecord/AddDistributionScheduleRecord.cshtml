@@ -6,7 +6,7 @@
 @inject UserManager<Cloud_AssignmentUser> UserManager
 
 @{
-    var UserAccount = await UserManager.GetUserAsync(User);
+    var UserList = UserManager.Users;
 }
 <style>
     body {
@@ -93,12 +93,19 @@
                 <td><span asp-validation-for="DistributionRecord!.DOD"></span></td>
             </tr>
             <tr>
-                <th><label>Distributor </label></th>
-                <td><label>@UserAccount?.UserFullName</label></td>
-                <td></td>
-            </tr>
-            <tr>
-                <input asp-for="DistributionRecord!.DistributorId" value="@UserAccount?.Id" hidden />
+                <th><label asp-for="DistributionRecord!.DistributorId">Distributor </label></th>
+                <td><select asp-for="DistributionRecord!.DistributorId" id="Distributor">
+                        <option value="">Select a Distributor</option>
+                        @foreach(var user in UserList)
+                        {
+                            if(user.UserRole == "distributor")
+                            {
+                                <option value="@user.Id">@user.UserFullName</option>
+                            }
+                        }
+                    </select>
+                </td>
+                <td><span asp-validation-for="DistributionRecord!.DistributorId"></span></td>
             </tr>
         </table>
         <input type="submit" name="submit" value="Add Schedule" class="btn" />
@@ -109,11 +116,15 @@
     function validateForm(event){
         var recordID = document.getElementById('RecordId').value;
         var date = document.getElementById('DOD').value;
+        var distributor = document.getElementById('Distributor').value;
         if (recordID == null || recordID == "") {
             alert("Please select the actual request record ID! ");
             event.preventDefault();
         }else if(date == null || date == ""){
             alert("Please enter the actual date time! ");
+            event.preventDefault();
+        }else if(distributor == null || distributor == ""){
+            alert("Please select a distributor! ");
             event.preventDefault();
         }else{
             alert("Distribution Schedule Record have been added! ");

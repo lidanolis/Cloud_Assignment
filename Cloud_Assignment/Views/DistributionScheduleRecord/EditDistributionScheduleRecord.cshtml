@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<Cloud_AssignmentUser> UserManager
 @{
-    var UserAccount = await UserManager.GetUserAsync(User);
+    var UserList = UserManager.Users;
 }
 
 <style>
@@ -60,22 +60,22 @@
     <form method="post" asp-action="UpdateDistributionRecord" asp-controller="DistributionScheduleRecord" onsubmit="validateForm(event)">
         <table>
             <tr>
-                <th><label asp-for="DistributionId"></label></th>
+                <th><label asp-for="DistributionId">Distribution ID </label></th>
                 <td><input asp-for="DistributionId" readonly /></td>
                 <td><span asp-validation-for="DistributionId"></span></td>
             </tr>
             <tr>
-                <th><label asp-for="RecordType"></label></th>
+                <th><label asp-for="RecordType">Record Type</label></th>
                 <td><input asp-for="RecordType" readonly /></td>
                 <td><span asp-validation-for="RecordType"></span></td>
             </tr>
             <tr>
-                <th><label asp-for="RecordId"></label></th>
+                <th><label asp-for="RecordId">Record ID</label></th>
                 <td><input asp-for="RecordId" readonly /></td>
                 <td><span asp-validation-for="RecordId"></span></td>
             </tr>
             <tr>
-                <th><label asp-for="DistributionStatus"></label></th>
+                <th><label asp-for="DistributionStatus">Distribution Status</label></th>
                 <td>
                     <select asp-for="DistributionStatus" id="distributionstatus">
                         <option value="Pending">Pending</option>
@@ -90,12 +90,20 @@
                 <td><span asp-validation-for="DOD"></span></td>
             </tr>
             <tr>
-                <th><label>Distributor </label></th>
-                <td><label>@UserAccount?.UserFullName</label></td>
-                <td></td>
-            </tr>
-            <tr>
-                <input asp-for="DistributorId" value="@UserAccount?.Id" hidden />
+                <th><label asp-for="DistributorId">Distributor </label></th>
+                <td>
+                    <select asp-for="DistributorId" id="Distributor">
+                        <option value="">Select a Distributor</option>
+                        @foreach (var user in UserList)
+                        {
+                            if (user.UserRole == "distributor")
+                            {
+                                <option value="@user.Id">@user.UserFullName</option>
+                            }
+                        }
+                    </select>
+                </td>
+                <td><span asp-validation-for="DistributorId"></span></td>
             </tr>
         </table>
         <button type="submit" class="btn"> Update Schedule </button>
@@ -103,23 +111,18 @@
 </center>
 
 <script>
-    var isDeliverd = true;
-    var dropdown = document.getElementById("distributionstatus");
-    if (@Model.DistributionStatus == "Pending") {
-        var isDeliverd = false;
-    }
-    if (isDeliverd) {
-        dropdown.value = "Deliverd";
-    } else {
-        dropdown.ariaValueMax = "Pending";
-    }
 
     function validateForm(event) {
         var date = document.getElementById('DOD').value;
+        var distributor = document.getElementById('Distributor').value;
         if (date == null || date == "") {
             alert("Please ensure your date is valid!");
             event.preventDefault();
-        } else {
+        } else if (distributor == null || distributor == "") {
+            alert("Please select a distributor! ");
+            event.preventDefault();
+        }
+        else {
             alert("Update Successfully");
         }
     }
