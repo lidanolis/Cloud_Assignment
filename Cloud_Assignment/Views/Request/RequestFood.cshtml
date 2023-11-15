@@ -1,0 +1,156 @@
+﻿@model List<InventoryRecord>
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Cloud_AssignmentUser> UserManager
+
+@{
+    ViewData["Title"] = "Food Donation Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var UserAccount = await UserManager.GetUserAsync(User);
+}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<style>
+    body {
+        background-color: #f4f7fa;
+        font-family: 'Arial', sans-serif;
+    }
+
+    h1 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .table {
+        margin-top: 20px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+        .table thead {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+    #submitbutton {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        #submitbutton:hover {
+            background-color: #218838;
+        }
+
+    .form-section {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container">
+    <center>
+        <h1>Food Request</h1>
+        <form asp-action="AddFoodRequest" method="post" id="foodRequestForm" class="needs-validation" novalidate>
+            <div class="form-section">
+                <h2>Food List</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Food Name</th>
+                            <th>Food Quantity</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            if (item.FoodTotal > 0)
+                            {
+                                <tr>
+                                    <td>@item.FoodName</td>
+                                    <td>@item.FoodTotal</td>
+                                    <td>@item.FoodDesc</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-section">
+                <div class="form-group">
+                    <label for="foodSelect">Choose a Food: </label>
+                    <select name="FoodId" id="foodSelect" class="form-control">
+                        @foreach (var item in Model)
+                        {
+                            if (item.FoodTotal > 0)
+                            {
+                                <option value="@item.FoodId" data-total="@item.FoodTotal" style="text-align: center;">@item.FoodName</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <input name="UserId" value="@UserAccount?.Id" type="hidden" />
+
+                <div class="form-group">
+                    <label for="FoodQuantity">Request Quantity: </label>
+                    <input type="number" name="FoodQuantity" min="1" class="form-control" style="text-align: center;" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="RequestDesc">Request Description: </label>
+                    <textarea name="RequestDesc" class="form-control" required></textarea>
+                </div>
+
+                <button type="submit" id="submitbutton" class="btn btn-success">Submit</button>
+            </div>
+        </form>
+    </center>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+    document.getElementById('foodRequestForm').onsubmit = function (event) {
+        var foodSelect = document.getElementById('foodSelect');
+        var selectedOption = foodSelect.options[foodSelect.selectedIndex];
+        var totalQuantity = selectedOption.getAttribute('data-total');
+        var enteredQuantity = document.querySelector('input[name="FoodQuantity"]').value;
+        var requestDesc = document.querySelector('textarea[name="RequestDesc"]').value;
+        var enteredQuantity = document.querySelector('input[name="FoodQuantity"]').value;
+
+        if (parseInt(enteredQuantity) <= 0) {
+            alert('The request quantity must be greater than zero.');
+            event.preventDefault();
+            return false;
+        }
+        if (!enteredQuantity) {
+            alert('Please enter the request quantity.');
+            event.preventDefault();
+            return false;
+        }
+        if (!requestDesc.trim()) {
+            alert('Please enter the request description.');
+            event.preventDefault();
+            return false;
+        }
+        if (parseInt(enteredQuantity) > parseInt(totalQuantity)) {
+            alert('The requested quantity exceeds the available total. Please enter a smaller quantity.');
+            event.preventDefault();
+            return false;
+        }
+    };
+</script>
