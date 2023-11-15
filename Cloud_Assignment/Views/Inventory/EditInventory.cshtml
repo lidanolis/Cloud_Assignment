@@ -1,0 +1,36 @@
+﻿@model InventoryRecord
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Cloud_AssignmentUser> UserManager
+@{
+    ViewData["Title"] = "EditInventory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var UserAccount = await UserManager.GetUserAsync(User);
+}
+
+<h1>Edit Inventory</h1>
+
+<center>
+    <form asp-action="UpdateInventory" method="post">
+        <table border="1" class="DonationHistoryTable">
+            <tr>
+                <th class="tHistoryTable"><label>Food Id</label></th>
+                <th class="tHistoryTable"><label>Food Name</label></th>
+                <th class="tHistoryTable"><label>Food Description</label></th>
+                <th class="tHistoryTable"><label></label></th>
+            </tr>
+                <tr>
+                <td class="tHistoryTable"><input name="FoodId" value="@Model.FoodId" readonly /></td>
+                <td class="tHistoryTable"><input name="FoodName" value="@Model.FoodName" /></td>
+                <td class="tHistoryTable"><input name="FoodDesc" value="@Model.FoodDesc" /></td>
+                    <td class="tHistoryTable">
+                        <input type="submit" id="submitbutton" name="submit" value="UPDATE" />
+                    </td>
+
+                </tr>
+        </table>
+    </form>
+    <br />
+    <br />
+</center>
+
