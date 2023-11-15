@@ -34,9 +34,9 @@
                 <td style="@cellStyle">@item.FoodQuantity</td>
                 <td style="@cellStyle">@item.DOR</td>
                 <td style="@cellStyle">@item.Description</td>
-                <form asp-action="DeleteFoodDonationRecord" asp-controller="Donation" asp-route-RecordId="@item.RecordId">
-                <td style="@cellStyle"><button>Delete</button></td>
-                <td style="@cellStyle"><button asp-action="EditFoodDonationRecord" asp-controller="Donation" asp-route-RecordId="@item.RecordId">Edit</button></td>
+                <form asp-action="DeleteFoodDonationRecord" asp-controller="Home" asp-route-RecordId="@item.RecordId">
+                <td style="@cellStyle"><button class="btn btn-danger">Delete</button></td>
+                <td style="@cellStyle"><button class="btn btn-success" asp-action="EditFoodDonationRecord" asp-controller="Home" asp-route-RecordId="@item.RecordId">Edit</button></td>
                 </form>
             </tr>
         }
