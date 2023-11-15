@@ -1,0 +1,124 @@
+﻿@model Cloud_Assignment.Controllers.UserRecordController.userRecordViewModel
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Cloud_AssignmentUser> UserManager
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userList = Model.emailList;
+
+}
+
+<h1>Register A New User</h1>
+<h2 class="shadow-text">Create a new account.</h2>
+<hr />
+<center>
+    <div>
+        <div class="col-md-4">
+            <form onsubmit="validateCredentials(event)" asp-action="registerNewUser" asp-controller="userRecord" id="registerForm" method="post">
+                <div class="form-floating mb-3">
+                    <input id="userEmail" name="userEmail" asp-for="@Model.registerMode.Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label asp-for="@Model.registerMode.Input.Email">Email</label>
+                    <span asp-validation-for="@Model.registerMode.Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input id="userPassword" name="userPassword" asp-for="@Model.registerMode.Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <label asp-for="@Model.registerMode.Input.Password">Password</label>
+                    <span asp-validation-for="@Model.registerMode.Input.Password" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input id="userConfirmPassword" name="userConfirmPassword" asp-for="@Model.registerMode.Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                    <label asp-for="@Model.registerMode.Input.ConfirmPassword">Confirm Password</label>
+                    <span asp-validation-for="@Model.registerMode.Input.ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input id="userFullName" name="userFullName" asp-for="@Model.registerMode.Input.userfullname" class="form-control" aria-required="true" />
+                    <label asp-for="@Model.registerMode.Input.userfullname">User Full Name</label>
+                    <span asp-validation-for="@Model.registerMode.Input.userfullname" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input id="userDob" name="userDob" asp-for="@Model.registerMode.Input.DoB" class="form-control" aria-required="true" />
+                    <label asp-for="@Model.registerMode.Input.DoB">Date Of Birth</label>
+                    <span asp-validation-for="@Model.registerMode.Input.DoB" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <select name="userType" id="userType">
+                        <option value="user">User</option>
+                        <option value="staff">Staff</option>
+                        <option value="distributor">Distributor</option>
+                    </select>
+                </div>
+                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</center>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<script>
+    function validateCredentials(event){
+        try {
+            var userEmail = document.getElementById('userEmail').value;
+            var userPassword = document.getElementById('userPassword').value;
+            var userConfirmPassword = document.getElementById('userConfirmPassword').value;
+            var userFullName = document.getElementById('userFullName').value;
+            var userDob = document.getElementById('userDob').value;
+            var userType = document.getElementById('userType').value;
+
+            if (userEmail == "" || userPassword == "" || userConfirmPassword == "" || userFullName == "" || userDob == "" || userType =="") {
+                alert("Invalid Credentials");
+                event.preventDefault();
+            } else if (!userEmail.endsWith("@@gmail.com")) {
+                alert("Invalid Email");
+                event.preventDefault();
+            } else if (userPassword != userConfirmPassword) {
+                alert("Invalid Password");
+                event.preventDefault();
+            } else if (!(userFullName.length >= 6 && userFullName.length <= 255)) {
+                alert("Invalid Username Format");
+                event.preventDefault();
+            } else if(!(userPassword.length>=6 && userPassword.length<=10)){
+                alert("Invalid Password Format");
+                event.preventDefault();
+            } else if (!validatePassword(userPassword)) {
+                alert("Invalid Password Format");
+                event.preventDefault();
+            }
+            else {
+                var udList = @Html.Raw(Json.Serialize(userList));
+                var foundObject = udList.find(item => item == userEmail);
+                console.log(foundObject);
+                if (foundObject != null) {
+                    alert("Email Already In Use");
+                    event.preventDefault();
+                }
+            }
+        }catch(err){
+            alert(err);
+            event.preventDefault();
+        }
+
+    }
+
+    function validatePassword(password) {
+        // Password must have at least one non-alphanumeric character
+        const nonAlphanumericRegex = /[^A-Za-z0-9]/;
+
+        // Password must have at least one digit
+        const digitRegex = /\d/;
+
+        // Password must have at least one uppercase letter
+        const uppercaseRegex = /[A-Z]/;
+
+        // Check each condition
+        const hasNonAlphanumeric = nonAlphanumericRegex.test(password);
+        const hasDigit = digitRegex.test(password);
+        const hasUppercase = uppercaseRegex.test(password);
+
+        // Return true if all conditions are met, otherwise false
+        return hasNonAlphanumeric && hasDigit && hasUppercase;
+    }
+
+</script>
+

@@ -1,5 +1,5 @@
 ﻿body {
-    background-image: url('/css/definiteBackground.jpg');
+    background-image: url('/css/trulyLastMainBackground.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -91,6 +91,24 @@ li:hover {
 .staffReport {
     background-image: url('/css/headerSplit.jpg');
     background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.moneyReport {
+    background-image: url('/css/moneyReport.png');
+    background-size:contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.userReport {
+    background-image: url('/css/userReport.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.foodReport {
+    background-image: url('/css/foodReport.png');
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
 }

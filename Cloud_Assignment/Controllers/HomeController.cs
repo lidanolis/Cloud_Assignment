@@ -14,6 +14,7 @@ namespace Cloud_Assignment.Controllers
 		{
 			public List<FinancialRecord>? FinancialList { get; set; }
 			public List<FoodRecord>? FoodRecord { get; set; }
+            public List<DistributionSchedule>? DistributionRecord { get; set; }
 		}
 		//private readonly ILogger<HomeController> NA;
 
@@ -33,6 +34,7 @@ namespace Cloud_Assignment.Controllers
 			var CompiledList = new HomeViewModel();
 			CompiledList.FinancialList = await _context.FinancialRecord.ToListAsync();
 			CompiledList.FoodRecord = await _context.FoodRecord.ToListAsync();
+			CompiledList.DistributionRecord = await _context.DistributionSchedule.ToListAsync();
 			return View(CompiledList);
         }
 

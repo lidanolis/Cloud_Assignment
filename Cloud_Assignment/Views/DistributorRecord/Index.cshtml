@@ -3,6 +3,10 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<Cloud_AssignmentUser> UserManager
 
+	@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	}
+
 <center><h1>Distribution Management</h1></center>
 <span><br /></span>
 
@@ -107,8 +111,8 @@
 
 		@foreach (var item in Model)
 		{
-			var user = await UserManager.FindByIdAsync(@item.DistributorId!);
-			if (item.DistributionStatus != "Delivered")
+			var user = await UserManager.GetUserAsync(User);
+			if (item.DistributionStatus != "Delivered" && item.DistributorId.Equals(user.Id))
 			{
 				<tr>
 					<td>@item.DistributionId</td>

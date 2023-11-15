@@ -5,21 +5,38 @@
 	ViewData["Title"] = "Home Page";
 	var UserAccount = await UserManager.GetUserAsync(User);
 	int totalfood = 0;
+	int totalRecord = 0;
+	int totalCRecord = 0;
 	decimal totalmoney = 0;
 
-	foreach (var item in Model.FoodRecord)
+	if (UserAccount != null)
 	{
-		if(item.RecordType == "donation")
+		foreach (var item in Model.FoodRecord)
 		{
-			totalfood = totalfood + (int)item.FoodQuantity;
+			if (item.RecordType == "donation")
+			{
+				totalfood = totalfood + (int)item.FoodQuantity;
+			}
 		}
-	}
 
-	foreach (var item in Model.FinancialList)
-	{
-		if (item.RecordType == "donation")
+		foreach (var item in Model.FinancialList)
 		{
-			totalmoney = totalmoney + (decimal)item.Amount;
+			if (item.RecordType == "donation")
+			{
+				totalmoney = totalmoney + (decimal)item.Amount;
+			}
+		}
+
+		foreach (var item in Model.DistributionRecord)
+		{
+			if (item.DistributorId == UserAccount.Id)
+			{
+				totalRecord++;
+				if (item.DistributionStatus == "Delivered")
+				{
+					totalCRecord++;
+				}
+			}
 		}
 	}
 }
@@ -143,8 +160,8 @@
 			{
 				<div class="rowdisplay fullwidthbluecard" style="padding:10px 0 10px 0;gap:15px">
 					<table class="shadow newscard" cellpadding="0" cellspacing="0">
-						<tr>
-							<td class="newspic staffReport"></td>
+						<tr style="background-color:lightblue">
+							<td class="newspic foodReport"></td>
 						</tr>
 						<tr>
 							<td class="newstext" style="text-align:center">
@@ -153,8 +170,8 @@
 						</tr>
 					</table>
 					<table class="shadow newscard" cellpadding="0" cellspacing="0">
-						<tr>
-							<td class="newspic staffReport "></td>
+						<tr style="background-color:lightgreen">
+							<td class="newspic moneyReport "></td>
 						</tr>
 						<tr>
 							<td class="newstext" style="text-align:center">
@@ -163,8 +180,8 @@
 						</tr>
 					</table>
 					<table class="shadow newscard" cellpadding="0" cellspacing="0">
-						<tr>
-							<td class="newspic staffReport"></td>
+						<tr style="background-color:lightgrey">
+							<td class="newspic userReport"></td>
 						</tr>
 						<tr>
 							<td class="newstext" style="text-align:center">
@@ -185,6 +202,18 @@
 					<h2 class="shadow-text">RM <bold style="background-color:yellow;">@totalmoney </bold> of Money</h2>
 					<br/>
 					<h1 class="shadow-text display-4">Thank You For Your Contributions!</h1>
+				</div>
+			}
+			else if (@UserAccount.UserRole == "distributor")
+			{
+				<div class="text-center">
+					<h1 class="shadow-text display-4">You Have:</h1>
+					<br />
+					<h2 class="shadow-text"><bold style="background-color:yellow;">@totalRecord</bold> Number of Assigned Distributions</h2>
+					<br />
+					<h2 class="shadow-text"><bold style="background-color:yellow;">@totalCRecord</bold> Completed</h2>
+					<br />
+					<h1 class="shadow-text display-4">Keep Up The Good Work!</h1>
 				</div>
 			}
 

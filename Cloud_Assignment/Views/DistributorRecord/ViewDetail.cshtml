@@ -4,6 +4,7 @@
 @inject UserManager<Cloud_AssignmentUser> UserManager
 @{
     var UserAccount = await UserManager.GetUserAsync(User);
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style>
@@ -117,3 +118,6 @@
         </table>
     </form>
 </center>
+<br/>
+<br/>
+<br/>
