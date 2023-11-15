@@ -29,7 +29,7 @@ namespace Cloud_Assignment.Areas.Identity.Pages.Account
         private readonly UserManager<Cloud_AssignmentUser> _userManager;
         private readonly IUserStore<Cloud_AssignmentUser> _userStore;
         private readonly IUserEmailStore<Cloud_AssignmentUser> _emailStore;
-        private readonly ILogger<RegisterModel> _logger;
+        private readonly ILogger<RegisterModel> _context;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
@@ -43,7 +43,7 @@ namespace Cloud_Assignment.Areas.Identity.Pages.Account
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
-            _logger = logger;
+            _context = logger;
             _emailSender = emailSender;
         }
 
@@ -139,7 +139,7 @@ namespace Cloud_Assignment.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    //_logger.LogInformation("User created a new account with password.");
+                    //_context.LogInformation("User created a new account with password.");
 
                     //var userId = await _userManager.GetUserIdAsync(user);
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

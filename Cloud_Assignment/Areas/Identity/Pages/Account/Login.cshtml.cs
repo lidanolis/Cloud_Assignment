@@ -21,12 +21,12 @@ namespace Cloud_Assignment.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<Cloud_AssignmentUser> _signInManager;
-        private readonly ILogger<LoginModel> _logger;
+        private readonly ILogger<LoginModel> _context;
 
         public LoginModel(SignInManager<Cloud_AssignmentUser> signInManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
-            _logger = logger;
+            _context = logger;
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Cloud_Assignment.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    _context.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -124,7 +124,7 @@ namespace Cloud_Assignment.Areas.Identity.Pages.Account
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
+                    _context.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
                 else

@@ -19,6 +19,15 @@ else{
         <h1 class="display-4">Name: @UserAccount.UserFullName</h1>
         <h1 class="display-4">Role: @UserAccount.UserRole</h1>
         <h1 class="display-4">DOB: @UserAccount.UserDOB</h1>
+        @{
+            if (@UserAccount.UserRole == "staff")
+            {
+                <p><a asp-action="viewFoodDonationRecord">View Food Donation Record</a></p>
+                <p><a asp-action="viewMoneyDonationRecord">View Money Donation Record</a></p>
+                <p><a asp-action="viewUserDetail">View All Users</a></p>
+            }
+        }
+        
     </div>
 }
 
