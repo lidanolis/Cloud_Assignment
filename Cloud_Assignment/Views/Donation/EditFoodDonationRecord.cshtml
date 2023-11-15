@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewData["Title"] = "EditFoodDonationRecord";
+}
+
+@model Cloud_Assignment.Models.FoodRecord
+<center>
+    <h1>Update Food Donation Record:</h1>
+    <br /><hr /><br />
+    <form method="post" asp-action="UpdateFoodDonationRecord" asp-controller="Donation">
+        <table border='1'>
+            <tr>
+                <th><label asp-for="RecordId"></label></th>
+                <td><input asp-for="RecordId" readonly /></td>
+            </tr>
+            <tr>
+                <th><label asp-for="RecordType"></label></th>
+                <td><input asp-for="RecordType" /></td>
+                <td><span asp-validation-for="RecordType"></span></td>
+            </tr>
+            <tr>
+                <th><label asp-for="UserId"></label></th>
+                <td><input asp-for="UserId" readonly /></td>
+                @* <td><span asp-validation-for="UserId"></span></td> *@
+            </tr>
+            <tr>
+                <th><label asp-for="FoodId"></label></th>
+                <td><input asp-for="FoodId" readonly/></td>
+                @* <td><span asp-validation-for="FoodId"></span></td> *@
+            </tr>
+            <tr>
+                <th><label asp-for="FoodQuantity"></label></th>
+                <td><input asp-for="FoodQuantity" /></td>
+                <td><span asp-validation-for="FoodQuantity"></span></td>
+            </tr>
+            <tr>
+                <th><label asp-for="DOR"></label></th>
+                <td><input asp-for="DOR" /></td>
+                <td><span asp-validation-for="DOR"></span></td>
+            </tr>
+            <tr>
+                <th><label asp-for="Description"></label></th>
+                <td><input asp-for="Description" /></td>
+                <td><span asp-validation-for="Description"></span></td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align:center">
+                    <button type="submit" class="btn-info">
+                        Update
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</center>
