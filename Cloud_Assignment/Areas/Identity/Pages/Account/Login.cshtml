@@ -4,9 +4,9 @@
 @{
     ViewData["Title"] = "Log in";
 }
-
-<h1>@ViewData["Title"]</h1>
-<h2>Use a local account to log in.</h2>
+<link rel="stylesheet" href="~/css/style.css">
+<h1 class="shadow-text">@ViewData["Title"]</h1>
+<h2 class="shadow-text">Use a local account to log in.</h2>
 <hr />
 <center>
     <div class="col-md-4">
@@ -26,12 +26,14 @@
                 <div>
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
                 </div>
+                <br />
+
                 <div>
                     <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                        <a class="linkChange" id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
                     </p>
                     <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                        <a class="linkChange" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
                     </p>
                 </div>
             </form>

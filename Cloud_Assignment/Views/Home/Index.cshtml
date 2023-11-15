@@ -5,11 +5,11 @@
     var UserAccount = await UserManager.GetUserAsync(User);
 }
 @inject UserManager<Cloud_AssignmentUser> UserManager
-
+<link rel="stylesheet" href="~/css/style.css">
 @if(UserAccount == null)
 {
     <div class="text-center">
-        <h1 class="display-4">Welcome To The Online FoodBank</h1>
+        <h1 class="shadow-text display-4">Welcome To The Online FoodBank</h1>
     </div>
 }   
 else{
