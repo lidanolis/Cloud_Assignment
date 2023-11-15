@@ -1,4 +1,5 @@
-﻿@using Cloud_Assignment.Areas.Identity.Data
+﻿@model List<FinancialRecord>
+@using Cloud_Assignment.Areas.Identity.Data
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<Cloud_AssignmentUser> UserManager
 
@@ -6,12 +7,59 @@
     ViewData["Title"] = "CreateMoneyDonation";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var UserAccount = await UserManager.GetUserAsync(User);
+    var FinancialRecords = new List<FinancialRecord>();
+    foreach (var item in Model)
+    {
+        if (item.UserId == UserAccount.Id)
+        {
+            FinancialRecords.Add(item);
+        }
+    }
+}
+<style>
+    .DonationHistoryTable {
+        margin: 10px;
+        width: 100%;
+        border-collapse: collapse;
+        border: 2px solid #000; /* Adjust the border color and width as needed */
+    }
+
+    .tHistoryTable {
+        border: 1px solid #000; /* Adjust the border color and width as needed */
+        padding: 8px; /* Adjust the padding as needed */
+    }
+
+    .errorBox {
+        background-color: red;
+        text-align: center;
+        color: white;
+    }
+
+</style>
+<h1>Create Money Donation</h1>
+@if (FinancialRecords.Count >= 1)
+{
+    <table border="1" class="DonationHistoryTable">
+        <tr>
+            <th class="tHistoryTable"><label>Currency</label></th>
+            <th class="tHistoryTable"><label>Amount</label></th>
+            <th class="tHistoryTable"><label>Money Donation Date</label></th>
+        </tr>
+        @foreach (var item in FinancialRecords)
+        {
+            <tr>
+                <td class="tHistoryTable">@item.CurrencyType</td>
+                <td class="tHistoryTable">@item.Amount</td>
+                <td class="tHistoryTable">@item.DOR</td>
+            </tr>
+        }
+    </table>
+    <br />
+    <br />
 }
 
-<h1>Create Money Donation</h1>
-
 <center>
-    <form asp-action="AddMoneyDonation" method="post">
+    <form onsubmit="validateCredentials(event)" asp-action="AddMoneyDonation" method="post">
         <table>
             <tr>
                 <th><label>User Information</label></th>
@@ -24,7 +72,7 @@
                     <label>Amount:</label>
                 </th>
                 <td>
-                    <input name="Amount" />
+                    <input type="number" id="MoneyAmountInput" name="Amount" min="0" step="0.01" pattern="\d+(\.\d{1,2})?" oninput="validity.valid || (value = '');">
                 </td>
             </tr>
             <tr>
@@ -32,6 +80,36 @@
                     <input type="submit" id="submitbutton" name="submit" value="DONATE" />
                 </td>
             </tr>
+            <tr>
+                <td><div id="resultContainer"></div></td>
+            </tr>
         </table>
     </form>
 </center>
+
+<script>
+
+    function validateCredentials(event) {
+        clearResult();
+        var MoneyAmountInput = document.getElementById('MoneyAmountInput').value;
+
+        if (MoneyAmountInput == "") {
+            showResult("Invalid Credentials");
+            event.preventDefault();
+        }
+    }
+
+    function showResult(message) {
+        var resultLabel = document.createElement('label');
+
+        resultLabel.textContent = message;
+        resultLabel.classList.add('errorBox');
+
+        document.getElementById('resultContainer').appendChild(resultLabel);
+    }
+
+    function clearResult() {
+        var resultContainer = document.getElementById('resultContainer');
+        resultContainer.innerHTML = '';
+    }
+</script>

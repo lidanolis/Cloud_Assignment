@@ -1,4 +1,4 @@
-﻿@model List<InventoryRecord>
+﻿@model Cloud_Assignment.Controllers.DonationController.DonationViewModel
 @using Cloud_Assignment.Areas.Identity.Data
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<Cloud_AssignmentUser> UserManager
@@ -7,12 +7,59 @@
     ViewData["Title"] = "CreateFoodDonation";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var UserAccount = await UserManager.GetUserAsync(User);
+    var FullRecord = new List<FoodRecord>();
+    foreach(var item in Model.FoodRecord)
+    {
+        if(item.UserId == UserAccount.Id)
+        {
+            FullRecord.Add(item);
+        }
+    }
+}
+<style>
+    .DonationHistoryTable {
+        margin: 10px;
+        width: 100%;
+        border-collapse: collapse;
+        border: 2px solid #000; /* Adjust the border color and width as needed */
+    }
+
+    .tHistoryTable {
+        border: 1px solid #000; /* Adjust the border color and width as needed */
+        padding: 8px; /* Adjust the padding as needed */
+    }
+
+    .errorBox {
+        background-color: red;
+        text-align: center;
+        color: white;
+    }
+
+</style>
+<h1>New Food Donation</h1>
+@if(FullRecord.Count >= 1)
+{
+        <table border="1" class="DonationHistoryTable">
+            <tr> 
+                <th class="tHistoryTable"><label>Food Type</label></th>
+                <th class="tHistoryTable"><label>Food Quantity</label></th>
+                <th class="tHistoryTable"><label>Food Donation Date</label></th>
+            </tr>
+            @foreach(var item in FullRecord){
+            <tr>
+                <td class="tHistoryTable">@(item.FoodId == null ? "Removed" : Model.FoodList.Find(elem => elem.FoodId == item.FoodId).FoodName)</td>
+                    <td class="tHistoryTable">@item.FoodQuantity</td>
+                    <td class="tHistoryTable">@item.DOR</td>
+                </tr>
+            }
+        </table>
+        <br />
+        <br />
 }
 
-<h1>New Food Donation</h1>
 
 <center>
-    <form asp-action="AddFoodDonation" method="post">
+    <form onsubmit="validateCredentials(event)" asp-action="AddFoodDonation" method="post">
         <table>
             <tr> 
                 <th><label>User Information</label></th>
@@ -36,8 +83,8 @@
             <tr>
                 <th><label>Food Type</label></th>
                 <td id="existingFoodType">
-                    <select name="FoodId" onchange="selectFood(this)">
-                    @foreach (var item in Model)
+                    <select id="existingFoodTypeComboBox" name="FoodId" @(Model.FoodList.Count == 0 ? "disabled" : null)>
+                    @foreach (var item in Model.FoodList)
                     {
                         <option value="@item.FoodId">@item.FoodName</option>
                     }
@@ -50,9 +97,9 @@
 
             <tr id="newFoodTypeTextBox" hidden>
                 <th>
-                        <label for="FoodDesc">Food Description</label> </th>
+                    <label for="FoodDesc">Food Description</label> </th>
                 <td>
-                    <input type="text" name="FoodDesc" />
+                    <input id="newFoodDescTextBox" type="text" name="FoodDesc" />
                     
                 </td>
             </tr>
@@ -62,7 +109,7 @@
                 <label>Food Quantity</label>
                 </th>
                 <td>
-                    <input name="FoodQuantity" />
+                    <input type="number" id="FoodQuantityInput" name="FoodQuantity" min="0" step="1" pattern="\d*" oninput="validity.valid || (value = '');">
                 </td>
             </tr>
             <tr>
@@ -70,12 +117,18 @@
                     <input type="submit" id="submitbutton" name="submit" value="DONATE"/>
                 </td>
             </tr>
+            <tr>
+                <td><div id="resultContainer"></div></td>
+            </tr>
         </table>
     </form>
+    <br />
+    <br />
 </center>
 
 <script>
     function showControls(selectElement) {
+        clearResult();
         var showCombo = selectElement.value;
         var existingFoodType = document.getElementById('existingFoodType');
         var newFoodType = document.getElementById('newFoodType');
@@ -94,4 +147,45 @@
             document.getElementById('selectedOption').value = "showOther";
         }
     }
+
+    function validateCredentials(event){
+        var showCombo = document.getElementById('selectedOption').value;
+        clearResult();
+        if (showCombo == "showCombo") {
+            var existingFoodTypeComboBox = document.getElementById('existingFoodTypeComboBox').value;
+            var FoodQuantityInput = document.getElementById('FoodQuantityInput').value;
+
+            if (existingFoodTypeComboBox == "" || FoodQuantityInput == "") {
+                showResult("Invalid Credentials");
+                event.preventDefault();
+            }
+        } else if (showCombo == "showOther") {
+            var newFoodTypeTextBox = document.getElementById('foodType').value;
+            var newFoodDescTextBox = document.getElementById('newFoodDescTextBox').value;
+            var FoodQuantityInput = document.getElementById('FoodQuantityInput').value;
+
+            if (newFoodTypeTextBox == "" || newFoodDescTextBox == "" || FoodQuantityInput == "") {
+                showResult("Invalid Credentials");
+                event.preventDefault();
+            }
+        } else {
+            showResult(showCombo);
+            event.preventDefault();
+        }
+    }
+
+    function showResult(message) {
+        var resultLabel = document.createElement('label');
+
+        resultLabel.textContent = message;
+        resultLabel.classList.add('errorBox');
+
+        document.getElementById('resultContainer').appendChild(resultLabel);
+    }
+
+    function clearResult() {
+        var resultContainer = document.getElementById('resultContainer');
+        resultContainer.innerHTML = '';
+    }
 </script>
+
