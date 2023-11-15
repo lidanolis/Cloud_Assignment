@@ -1,0 +1,83 @@
+﻿@model Cloud_Assignment.Models.RequestRecord
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Cloud_AssignmentUser> UserManager
+
+@{
+	ViewData["Title"] = "CreateFoodDonation";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var UserAccount = await UserManager.GetUserAsync(User);
+}
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+@if (TempData["Error"] != null)
+{
+	<div class="alert alert-danger" style="text-align: center;">
+		@TempData["Error"].ToString()
+	</div>
+}
+
+<div class="container mt-5">
+	<div class="row">
+		<div class="col-md-8 offset-md-2">
+			<h1 class="text-center">Edit Food Request Status</h1>
+			<hr />
+			<form asp-action="UpdateRequest" method="post">
+				<div class="form-group">
+					<label asp-for="RecordId">Record Id</label>
+					<input asp-for="RecordId" class="form-control" readonly />
+				</div>
+				<div class="form-group">
+					<label asp-for="UserId">User Id</label>
+					<input asp-for="UserId" class="form-control" readonly />
+				</div>
+				<div class="form-group">
+					<label asp-for="FoodId">Food Id</label>
+					<input asp-for="FoodId" class="form-control" readonly />
+				</div>
+				<div class="form-group">
+					<label asp-for="FoodQuantity">Request Quantity</label>
+					<input asp-for="FoodQuantity" class="form-control" readonly />
+				</div>
+				<div class="form-group">
+					<label asp-for="DOR">Request Date</label>
+					<input asp-for="DOR" class="form-control" readonly>
+				</div>
+				<div class="form-group">
+					<label asp-for="RequestDesc">Request Description</label>
+					<textarea asp-for="RequestDesc" class="form-control" readonly></textarea>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="RequestStatus">Request Status</label>
+					<select asp-for="RequestStatus" class="form-control">
+						<option value="accept">accept</option>
+						<option value="deny">deny</option>
+						<option value="pending">pending</option>
+					</select>
+					<input name="RequestDate" value="@Model.DOR" hidden />
+					<input name="StaffId" value="@UserAccount?.Id" hidden />
+				</div>
+				<div class="form-group">
+					<div class="text-center">
+						<button type="submit" class="btn btn-info">Save</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<fieldset></fieldset>
+				</div>
+				<div class="form-group">
+					<fieldset></fieldset>
+				</div>
+				<div class="form-group">
+					<fieldset></fieldset>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

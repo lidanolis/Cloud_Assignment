@@ -1,0 +1,69 @@
+﻿@using Cloud_Assignment.Areas.Identity.Data
+@model List<Cloud_AssignmentUser>
+
+@{
+    ViewData["Title"] = "viewUserDetail";
+    var tableStyle = "border-collapse: collapse; width: 100%;";
+    var cellStyle = "border: 1px solid #000000; padding: 8px; text-align: left;";
+    var headerStyle = "background-color: yellow;";
+}
+
+
+<div class="table-responsive" style="border: 1px solid #000000;">
+    <table class="table" style="@tableStyle">
+        <tr style="@headerStyle">
+            <th style="@cellStyle">User ID</th>
+            <th style="@cellStyle">UserName</th>
+            <th style="@cellStyle">Email</th>
+            <th style="@cellStyle">EmailConfirmed</th>
+            <th style="@cellStyle">Address</th>
+            <th style="@cellStyle">Age</th>
+            <th style="@cellStyle">Phone No</th>
+            <th style="@cellStyle">PhoneNumberConfirmed</th>
+            <th style="@cellStyle">Date Of Birth</th>
+            <th style="@cellStyle">Role</th>
+
+            <th style="@cellStyle">User Name</th>
+            <th style="@cellStyle">Normalized User Name</th>
+            <th style="@cellStyle">NormalizedEmail</th>
+            <th style="@cellStyle">PasswordHash</th>
+            <th style="@cellStyle">SecurityStamp</th>
+            <th style="@cellStyle">ConcurrencyStampityStamp</th>
+            <th style="@cellStyle">TwoFactorEnabled</th>
+            <th style="@cellStyle">LockoutEnd</th>
+            <th style="@cellStyle">LockoutEnabled</th>
+            <th style="@cellStyle">AccessFailedCount</th>
+
+
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="@cellStyle">@item.Id</td>
+                <td style="@cellStyle">@item.UserFullName</td>
+                <td style="@cellStyle">@item.Email</td>
+                <td style="@cellStyle">@item.EmailConfirmed</td>
+                <td style="@cellStyle">@item.UserAddress</td>
+                <td style="@cellStyle">@item.UserAge</td>
+                <td style="@cellStyle">@item.PhoneNumber</td>
+                <td style="@cellStyle">@item.PhoneNumberConfirmed</td>
+                <td style="@cellStyle">@item.UserDOB</td>
+                <td style="@cellStyle">@item.UserRole</td>
+
+                <td style="@cellStyle">@item.UserName</td>
+                <td style="@cellStyle">@item.NormalizedUserName</td>
+                <td style="@cellStyle">@item.NormalizedEmail</td>
+                <td style="@cellStyle">@item.PasswordHash</td>
+                <td style="@cellStyle">@item.SecurityStamp</td>
+                <td style="@cellStyle">@item.ConcurrencyStamp</td>
+                <td style="@cellStyle">@item.TwoFactorEnabled</td>
+                <td style="@cellStyle">@item.LockoutEnd</td>
+                <td style="@cellStyle">@item.LockoutEnabled</td>
+                <td style="@cellStyle">@item.AccessFailedCount</td>
+
+
+            </tr>
+        }
+    </table>
+</div>
+    
