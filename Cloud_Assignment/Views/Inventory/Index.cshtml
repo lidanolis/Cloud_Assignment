@@ -1,8 +1,467 @@
-﻿
+﻿@model Cloud_Assignment.Controllers.InventoryController.InventoryViewModel
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Cloud_AssignmentUser> UserManager
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var UserAccount = await UserManager.GetUserAsync(User);
+    FinancialRecord? SpecificFinancial = null;
+    var ListofFood = new List<InventoryRecord>();
+    if (Model.FinancialRecord.Count >= 1)
+    {
+        ListofFood = Model.FoodList;
+    }
+    if (Model.FinancialRecord.Count >= 1)
+    {
+        SpecificFinancial = Model.FinancialRecord.Last();
+    }
+
+}
+<style>
+    .DonationHistoryTable {
+        margin: 10px;
+        width: 100%;
+        border-collapse: collapse;
+        border: 2px solid #000; /* Adjust the border color and width as needed */
+    }
+
+    .tHistoryTable {
+        border: 1px solid #000; /* Adjust the border color and width as needed */
+        padding: 8px; /* Adjust the padding as needed */
+    }
+
+    .errorBox {
+        background-color: red;
+        text-align: center;
+        color: white;
+    }
+
+</style>
+<h1>Inventory</h1>
+<h2>-FOOD-</h2>
+@if (Model.FoodList.Count >= 1)
+{
+        <table border="1" class="DonationHistoryTable">
+            <tr>
+                <th class="tHistoryTable"><label>Food Id</label></th>
+                <th class="tHistoryTable"><label>Food Name</label></th>
+                <th class="tHistoryTable"><label>Food Total</label></th>
+                <th class="tHistoryTable"><label>Food Description</label></th>
+                <th class ="tHistoryTable"><label></label></th>
+                <th class="tHistoryTable"><label></label></th>
+            </tr>
+            @foreach (var item in Model.FoodList)
+            {
+                <tr>
+                    <td class="tHistoryTable">@item.FoodId</td>
+                    <td class="tHistoryTable">@item.FoodName</td>
+                    <td class="tHistoryTable">@item.FoodTotal</td>
+                    <td class="tHistoryTable">@item.FoodDesc</td>
+                    <form asp-action="EditInventory" asp-controller="Inventory" asp-route-foodId="@item.FoodId">
+                        <td class="tHistoryTable">
+                            <button>EDIT</button>
+                        </td>
+                        <td class="tHistoryTable">
+                    <button asp-action="RemoveInventory" asp-controller="Inventory" asp-route-fdId="@item.FoodId">REMOVE</button>
+                        </td>
+                    </form>
+                </tr>
+            }
+        </table>
+    <br />
+    <br />
 }
 
-<h1>Index</h1>
+<center>
+    <form onsubmit="validateDonationCredentials(event)" asp-action="AddFoodDonation" method="post">
+        <table>
+            <tr>
+                <th><label>User Information</label></th>
+                <td><input name="UserFullName" value="@UserAccount?.UserFullName" readonly /></td>
+                <td><input name="UserId" value="@UserAccount?.Id" hidden /></td>
+            </tr>
+            <tr>
+                <th><label for="DonationOptions">Inventory options:</label></th>
+                <td>
+                    <select onchange="showControls(this)">
+                        <option value="ModifyExisting" selected>Modify Existing Food Type</option>
+                        <option value="ModifyOther">Create New Food Type</option>
+                    </select>
+                </td>
+                <td><input type="hidden" name="DonationOptions" id="DonationOptions" value="ModifyExisting" /></td>
+            </tr>
+
+            @*  ////  *@
+            <tr>
+                <th><label>Food Type</label></th>
+                <td id="existingFoodType">
+                    <select id="existingFoodTypeComboBox" name="FoodId" @(Model.FoodList.Count == 0 ? "disabled" : null)>
+                        @foreach (var item in Model.FoodList)
+                        {
+                            <option value="@item.FoodId">@item.FoodName</option>
+                        }
+                    </select>
+                </td>
+                <td id="newFoodType" hidden>
+                    <input type="text" name="FoodType" id="foodType" />
+                </td>
+            </tr>
+            @*  ////  *@
+
+            <tr id="newFoodTypeTextBox" hidden>
+                <th>
+                    <label for="FoodDesc">Food Description</label>
+                </th>
+                <td>
+                    <input id="newFoodDescTextBox" type="text" name="FoodDesc" />
+                </td>
+            </tr>
+
+
+            <tr id="ManageDonationType">
+                <th><label for="ManageDonationType">Manage Donations</label></th>
+                <td>
+                    <select name="ManageDonationType" onchange="modifyDonation(this)">
+
+                        <option value="Modify" selected>Modify To</option>
+                        <option value="Increase">Increase BY</option>
+                        <option value="Decrease">Decrease By</option>
+
+                    </select>
+                </td>
+                <td><input type="hidden" name="selectedDonationOption" id="selectedDonationOption" value="Modify" /></td>
+            </tr>
+            <tr>
+                <th>
+                    <label>Food Quantity</label>
+                </th>
+                <td>
+                    <input type="number" id="FoodQuantityInput" name="FoodQuantityInput" min="0" step="1" pattern="\d*" oninput="validity.valid || (value = '');">
+                </td>
+            </tr>
+            @*  ////  *@
+            <tr>
+                <th>
+                    <label for="ModificationDesc">Reason Of Modification</label>
+                </th>
+                <td>
+                    <input id="ModificationDesc" type="text" name="ModificationDesc" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <input type="number" id="PassedDonationAmount" name="PassedDonationAmount" min="0" step="0.01" pattern="\d+(\.\d{1,2})?" oninput="validity.valid || (value = '');" value="0" hidden>
+
+                </td>
+                <td><input type="hidden" id="PassedDonationType" name="PassedDonationType" value="Modify" /></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" id="submitbutton" name="submit" value="UPDATE" />
+                </td>
+            </tr>
+            <tr>
+                <td><div id="foodResultContainer"></div></td>
+            </tr>
+        </table>
+    </form>
+</center>
+
+<br />
+<br />
+<h2>-MONEY-</h2>
+@if (SpecificFinancial != null)
+{
+    <table border="1" class="DonationHistoryTable">
+        <tr>
+            <th class="tHistoryTable"><label>Currency Type</label></th>
+            <th class="tHistoryTable"><label>Balance</label></th>
+        </tr>
+        <tr>
+            <td class="tHistoryTable">@SpecificFinancial.CurrencyType</td>
+            <td class="tHistoryTable">@SpecificFinancial.Balance</td>
+        </tr>
+    </table>
+    <br />
+    <br />
+}
+
+<center>
+    <form onsubmit="validateFinancialCredentials(event)" asp-action="AddMoneyDonation" method="post">
+        <table>
+            <tr>
+                <th><label>User Information</label></th>
+                <td><input name="UserFullName" value="@UserAccount?.UserFullName" readonly /></td>
+                <td><input name="UserId" value="@UserAccount?.Id" hidden /></td>
+            </tr>
+            <tr>
+                <th><label for="Financetype">Manage Finance</label></th>
+                <td>
+                    <select name="Financetype" onchange="modifyFinance(this)">
+
+                        <option value="Modify" selected>Modify To</option>
+                        <option value="Increase">Increase BY</option>
+                        <option value="Decrease">Decrease By</option>
+
+                    </select>
+                </td>
+                <td><input type="hidden" name="selectedOption" id="selectedOption" value="Modify" /></td>
+            </tr>
+
+            <tr>
+                <th>
+                    <label>Amount:</label>
+                </th>
+                <td>
+                    <input type="number" id="MoneyAmountInput" name="Amount" min="0" step="0.01" pattern="\d+(\.\d{1,2})?" oninput="validity.valid || (value = '');">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label>Reason Of Change</label>
+                </th>
+                <td>
+                    <input id="ChangeDesc" type="text" name="ChangeDesc" />
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="number" id="PassedAmount" name="PassedAmount" min="0" step="0.01" pattern="\d+(\.\d{1,2})?" oninput="validity.valid || (value = '');" value="0" hidden>
+
+                </td>
+                <td><input type="hidden" id="PassedType" name="PassedType" value="Modify" /></td>
+                <td><input type="hidden" id="SpecificFinancial" name="SpecificFinancial" value="@(SpecificFinancial ==  null ? "" : SpecificFinancial.Balance)" /></td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" id="submitbutton" name="submit" value="UPDATE" />
+                </td>
+            </tr>
+            <tr>
+                <td><div id="resultContainer"></div></td>
+            </tr>
+        </table>
+    </form>
+</center>
+
+<script>
+    function showControls(selectElement) {
+        clearResult();
+        var showCombo = selectElement.value;
+        
+        var existingFoodType = document.getElementById('existingFoodType');
+        var newFoodType = document.getElementById('newFoodType');
+        var newFoodTypeTextBox = document.getElementById('newFoodTypeTextBox');
+        var ManageDonationType = document.getElementById('ManageDonationType');
+
+        if (showCombo === 'ModifyExisting') {
+            existingFoodType.hidden = false;
+            ManageDonationType.hidden = false;
+            newFoodType.hidden = true;
+            newFoodTypeTextBox.hidden = true;
+            document.getElementById('DonationOptions').value = "ModifyExisting";
+
+        } else {
+            existingFoodType.hidden = true;
+            ManageDonationType.hidden = true;
+            newFoodType.hidden = false;
+            newFoodTypeTextBox.hidden = false;
+            document.getElementById('DonationOptions').value = "ModifyOther";
+        }
+    }
+    function validateDonationCredentials(event) {
+        try {
+            clearFoodResult();
+            var DonationOptions = document.getElementById("DonationOptions").value;
+
+            if (DonationOptions == "ModifyExisting") {
+
+                var existingFoodTypeComboBox = document.getElementById('existingFoodTypeComboBox').value;
+                var ModificationDesc = document.getElementById('ModificationDesc').value;
+                var selectedDonationOption = document.getElementById('selectedDonationOption').value;
+                var FoodQuantityInput = document.getElementById('FoodQuantityInput').value;
+
+                if (existingFoodTypeComboBox == "" || ModificationDesc == "" || selectedDonationOption == "" || FoodQuantityInput == "") {
+                    showFoodResult("Invalid Credentials");
+                    event.preventDefault();
+                }
+                else {
+                    var PassedDonationAmount = document.getElementById("PassedDonationAmount");
+                    var PassedDonationType = document.getElementById("PassedDonationType");
+
+                    var fdList = @Html.Raw(Json.Serialize(ListofFood));
+                    var value = parseInt(existingFoodTypeComboBox, 10);
+
+                    var foundObject = parseInt(fdList.find(item => item.foodId == value).foodTotal);
+                    var specDonationAmountInput = parseInt(FoodQuantityInput);
+
+                    if (selectedDonationOption == "Modify") {
+                        if (specDonationAmountInput > foundObject) {
+                            PassedDonationType.value = "Increase-M";
+                            PassedDonationAmount.value = specDonationAmountInput - foundObject;
+                        }
+                        else if (specDonationAmountInput < foundObject) {
+                            PassedDonationType.value = "Decrease-M";
+                            PassedDonationAmount.value = foundObject - specDonationAmountInput;
+                        }
+                        else {
+                            showFoodResult("No Revelant Change");
+                            event.preventDefault();
+                        }
+                    }
+                    else if (selectedDonationOption == "Increase") {
+                        PassedDonationType.value = "Increase";
+                        PassedDonationAmount.value = specDonationAmountInput;
+                    }
+                    else if (selectedDonationOption == "Decrease") {
+                        if (specDonationAmountInput > foundObject) {
+                            console.log("here");
+                            showFoodResult("Exceeded Amount Of Deduction");
+                            event.preventDefault();
+                        }
+                        else {
+                            PassedDonationType.value = "Decrease";
+                            PassedDonationAmount.value = specDonationAmountInput;
+                        }
+                    }
+                    else {
+                        showFoodResult("error");
+                        event.preventDefault();
+                    }
+                }
+
+            }
+            else if (DonationOptions == "ModifyOther") {
+                var newFoodType = document.getElementById('foodType').value;
+                var newFoodTypeTextBox = document.getElementById('newFoodDescTextBox').value;
+                var ModificationDesc = document.getElementById('ModificationDesc').value;
+                var selectedDonationOption = document.getElementById('selectedDonationOption').value;
+                var FoodQuantityInput = document.getElementById('FoodQuantityInput').value;
+
+                if (newFoodType == "" || newFoodTypeTextBox == "" || ModificationDesc == "" || selectedDonationOption == "" || FoodQuantityInput == "") {
+                    showFoodResult("Invalid Credentials");
+                    event.preventDefault();
+                }
+            }
+        }catch(err){
+            console.log(err);
+            event.preventDefault();
+        }
+    }
+
+    function modifyFinance(selectElement) {
+        clearResult();
+        var FinanceType = selectElement.value;
+        document.getElementById('selectedOption').value = FinanceType;
+    }
+    function modifyDonation(selectElement) {
+        clearFoodResult();
+        var DonationType = selectElement.value;
+        document.getElementById('selectedDonationOption').value = DonationType;
+    }
+
+    function validateFinancialCredentials(event) {
+        try {
+            clearResult();
+            var MoneyAmountInput = document.getElementById('MoneyAmountInput').value;
+            var selectedOption = document.getElementById('selectedOption').value;
+            var passedAmount = document.getElementById('PassedAmount');
+            var passedType = document.getElementById('PassedType');
+            var ChangeDesc = document.getElementById('ChangeDesc').value;
+            var SpecificFinancial = document.getElementById('SpecificFinancial').value;
+            if (MoneyAmountInput == "" || ChangeDesc == "") {
+                showResult("Invalid Credentials");
+                event.preventDefault();
+            }
+            else {
+
+                if (SpecificFinancial == "") {
+                    if (selectedOption == "Modify") {
+                        passedType.value = "Increase";
+                        passedAmount.value = MoneyAmountInput;
+                    }
+                    else if (selectedOption == "Increase") {
+                        passedType.value = "Increase";
+                        passedAmount.value = MoneyAmountInput;
+                    } else if (selectedOption == "Decrease") {
+                        showResult("Nothing To Decrease");
+                        event.preventDefault();
+                    }
+                } else {
+                    var specFinancial = parseFloat(SpecificFinancial);
+                    var specMoneyAmountInput = parseFloat(MoneyAmountInput);
+
+                    if (selectedOption == "Modify") {
+                        if (specMoneyAmountInput > specFinancial) {
+                            passedType.value = "Increase";
+                            passedAmount.value = specMoneyAmountInput - specFinancial;
+                        }
+                        else if (specMoneyAmountInput < specFinancial) {
+                            passedType.value = "Decrease";
+                            passedAmount.value = specFinancial - specMoneyAmountInput;
+                        }
+                        else {
+                            showResult("No Revelant Change");
+                            event.preventDefault();
+                        }
+                    }
+
+                    else if (selectedOption == "Increase") {
+                        passedType.value = "Increase";
+                        passedAmount.value = specMoneyAmountInput;
+                    }
+                    else if (selectedOption == "Decrease") {
+                        if (specMoneyAmountInput > specFinancial) {
+                            showResult("Exceeded Amount Of Deduction");
+                            event.preventDefault();
+                        }
+                        else {
+                            passedType.value = "Decrease";
+                            passedAmount.value = specMoneyAmountInput;
+                        }
+                    }
+                    else {
+                        showResult("error");
+                        event.preventDefault();
+                    }
+                }
+
+            }
+        } catch (err) {
+            showResult(err + "-");
+            event.preventDefault();
+        }
+    }
+    
+    function showFoodResult(message) {
+        var resultLabel = document.createElement('label');
+
+        resultLabel.textContent = message;
+        resultLabel.classList.add('errorBox');
+
+        document.getElementById('foodResultContainer').appendChild(resultLabel);
+    }
+
+    function clearFoodResult() {
+        var resultContainer = document.getElementById('foodResultContainer');
+        resultContainer.innerHTML = '';
+    }
+
+    function showResult(message) {
+        var resultLabel = document.createElement('label');
+
+        resultLabel.textContent = message;
+        resultLabel.classList.add('errorBox');
+
+        document.getElementById('resultContainer').appendChild(resultLabel);
+    }
+
+    function clearResult() {
+        var resultContainer = document.getElementById('resultContainer');
+        resultContainer.innerHTML = '';
+    }
+</script>
 

@@ -26,6 +26,7 @@ namespace Cloud_Assignment.Models
         public int? FoodId { get; set; }
 
         public InventoryRecord? InventoryRecord { get; set; }
+
         public int? FoodQuantity { get; set; }
 
         public Decimal? Amount { get; set; }

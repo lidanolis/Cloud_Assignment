@@ -20,22 +20,33 @@ namespace Cloud_Assignment.Controllers
             return View();
         }
 
+        public class DonationViewModel
+        {
+            public List<InventoryRecord>? FoodList { get; set; }
+            public List<FoodRecord>? FoodRecord { get; set; }
+        }
+
         public async Task<IActionResult> CreateFoodDonation()
         {
-            List<InventoryRecord> foodList;
+            var HistoryList = new DonationViewModel();
+            HistoryList.FoodList = new List<InventoryRecord>();
+            HistoryList.FoodRecord = new List<FoodRecord>();
             if (_context != null)
             {
-                foodList = await _context.InventoryRecord.ToListAsync();
+                HistoryList.FoodList = await _context.InventoryRecord.ToListAsync();
+                HistoryList.FoodRecord = await _context.FoodRecord.ToListAsync();
             }
-            else
-            {
-                foodList = new List<InventoryRecord>();
-            }
-            return View(foodList);
+            return View(HistoryList);
         }
-        public IActionResult CreateMoneyDonation()
+
+        public async Task<IActionResult> CreateMoneyDonation()
         {
-            return View();
+            List<FinancialRecord> financialRecord = new List<FinancialRecord>();
+            if (_context != null)
+            {
+                financialRecord = await _context.FinancialRecord.ToListAsync();
+            }
+            return View(financialRecord);
         }
         //---------------------------------------------------------------------------------------
         public async Task<IActionResult> viewFoodDonationRecord()
