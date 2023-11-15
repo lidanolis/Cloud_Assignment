@@ -13,14 +13,13 @@ public class Cloud_AssignmentContext : IdentityDbContext<Cloud_AssignmentUser>
     }
     public DbSet<FoodRecord> FoodRecord { get; set; }
 
-    public DbSet<FinancialRecord> FinancialRecord { get; set; }
+	public DbSet<FinancialRecord> FinancialRecord { get; set; }
     public DbSet<InventoryRecord> InventoryRecord { get; set; }
 
     public DbSet<DistributionSchedule> DistributionSchedule { get; set; }
     public DbSet<RequestRecord> RequestRecord { get; set; }
 
-
-    protected override void OnModelCreating(ModelBuilder builder)
+	protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
         // Customize the ASP.NET Identity model and override the defaults if needed.
