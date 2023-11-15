@@ -4,27 +4,36 @@ using Cloud_Assignment.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using static Cloud_Assignment.Controllers.DonationController;
 
 namespace Cloud_Assignment.Controllers
 {
-    public class HomeController : Controller
+	public class HomeController : Controller
     {
-        //private readonly ILogger<HomeController> NA;
+		public class HomeViewModel
+		{
+			public List<FinancialRecord>? FinancialList { get; set; }
+			public List<FoodRecord>? FoodRecord { get; set; }
+		}
+		//private readonly ILogger<HomeController> NA;
 
-        //public HomeController(ILogger<HomeController> logger)
-        //{
-        //    _logger = logger;
-        //}
-        private readonly Cloud_AssignmentContext _context;
+		//public HomeController(ILogger<HomeController> logger)
+		//{
+		//    _logger = logger;
+		//}
+		private readonly Cloud_AssignmentContext _context;
 
         public HomeController(Cloud_AssignmentContext context)
         {
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+			var CompiledList = new HomeViewModel();
+			CompiledList.FinancialList = await _context.FinancialRecord.ToListAsync();
+			CompiledList.FoodRecord = await _context.FoodRecord.ToListAsync();
+			return View(CompiledList);
         }
 
         public IActionResult Privacy()

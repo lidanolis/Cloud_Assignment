@@ -65,7 +65,32 @@ li:hover {
     background-color: #F0F8FF;
 }
 
-    .logbtn:hover {
-        background-color: #9966FF;
-        color: #FFFFFF;
-    }
+.logbtn:hover {
+    background-color: #9966FF;
+    color: #FFFFFF;
+}
+
+.foodDonation {
+    background-image: url('/css/foodDonation.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.moneyDonation {
+    background-image: url('/css/moneyDonation.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.userProfile {
+    background-image: url('/css/userProfile.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.staffReport {
+    background-image: url('/css/headerSplit.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}

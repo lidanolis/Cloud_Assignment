@@ -1,33 +1,194 @@
-﻿@using Cloud_Assignment.Areas.Identity.Data
+﻿@model Cloud_Assignment.Controllers.HomeController.HomeViewModel
+@using Cloud_Assignment.Areas.Identity.Data
 @using Microsoft.AspNetCore.Identity
 @{
-    ViewData["Title"] = "Home Page";
-    var UserAccount = await UserManager.GetUserAsync(User);
+	ViewData["Title"] = "Home Page";
+	var UserAccount = await UserManager.GetUserAsync(User);
+	int totalfood = 0;
+	decimal totalmoney = 0;
+
+	foreach (var item in Model.FoodRecord)
+	{
+		if(item.RecordType == "donation")
+		{
+			totalfood = totalfood + (int)item.FoodQuantity;
+		}
+	}
+
+	foreach (var item in Model.FinancialList)
+	{
+		if (item.RecordType == "donation")
+		{
+			totalmoney = totalmoney + (decimal)item.Amount;
+		}
+	}
 }
 @inject UserManager<Cloud_AssignmentUser> UserManager
 <link rel="stylesheet" href="~/css/style.css">
+<style>
+	.fullwidthbluecard {
+		color: white;
+		background: rgba(0,0,0,0.6);
+		width: 100%;
+	}
+
+	.blacktextshadow { /*creates a shadow effect right below the text*/
+		text-shadow: 2px 2px black;
+	}
+
+	.rowdisplay {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.shadow { /*shadow place a shadow*/
+		box-shadow: 0 0 10px 3px black;
+	}
+
+	.newscard {
+		border-radius: 30px;
+		width: 400px;
+		height: 300px;
+		transition: transform 1s;
+	}
+
+		.newscard:hover {
+			transform: translateY(-10px);
+			box-shadow: 0 0 20px 3px white;
+		}
+
+	.newspic {
+		border-radius: 30px 30px 0 0;
+		padding: 10px;
+		width: 400px;
+		height: 300px;
+		margin: 0;
+	}
+
+	.newstext {
+		border-radius: 0 0 30px 30px;
+		padding: 10px;
+		background: white;
+		width: 400px;
+		height: 200px;
+		text-align: justify; /*align the text*/
+	}
+
+</style>
+<body>
 @if(UserAccount == null)
 {
     <div class="text-center">
         <h1 class="shadow-text display-4">Welcome To The Online FoodBank</h1>
+			<h2 class="shadow-text">Meet The Developers</h2>
     </div>
-}   
-else{
-    <div class="text-center">
-        <h1 class="display-4">Welcome To The Online FoodBank</h1>
-        <h1 class="display-4">Here are your Information:</h1>
-        <h1 class="display-4">Name: @UserAccount.UserFullName</h1>
-        <h1 class="display-4">Role: @UserAccount.UserRole</h1>
-        <h1 class="display-4">DOB: @UserAccount.UserDOB</h1>
-        @{
-            if (@UserAccount.UserRole == "staff")
-            {
-                <p><a asp-action="viewFoodDonationRecord">View Food Donation Record</a></p>
-                <p><a asp-action="viewMoneyDonationRecord">View Money Donation Record</a></p>
-                <p><a asp-action="viewUserDetail">View All Users</a></p>
-            }
-        }
-        
+		<div class="rowdisplay fullwidthbluecard" style="padding:10px 0 10px 0;gap:15px">
+			<table class="shadow newscard" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="newspic userProfile"></td>
+				</tr>
+				<tr>
+					<td class="newstext" style="text-align:center">
+						<a href="" style="pointer-events: none; text-decoration: none;">EAMON CHIN SAN HUI</a>
+					</td>
+				</tr>
+			</table>
+			<table class="shadow newscard" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="newspic userProfile "></td>
+				</tr>
+				<tr>
+					<td class="newstext" style="text-align:center">
+						<a href="" style="pointer-events: none; text-decoration: none;">LIM JER SHYAN</a>
+					</td>
+				</tr>
+			</table>
+						<table class="shadow newscard" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="newspic userProfile"></td>
+				</tr>
+				<tr>
+					<td class="newstext" style="text-align:center">
+						<a href="" style="pointer-events: none; text-decoration: none;">KHOR WAI KEAT</a>
+					</td>
+				</tr>
+			</table>
+						<table class="shadow newscard" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="newspic userProfile"></td>
+				</tr>
+				<tr>
+					<td class="newstext" style="text-align:center">
+						<a href="" style="pointer-events: none; text-decoration: none;">MA MENG KHANG</a>
+					</td>
+				</tr>
+			</table>
+			<table class="shadow newscard" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="newspic userProfile"></td>
+				</tr>
+				<tr>
+					<td class="newstext" style="text-align:center">
+						<a href="" style="pointer-events: none; text-decoration: none;">TAN ENG KHON</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br></br>
+	}   
+	else{
+		<div class="text-center">
+			@if (@UserAccount.UserRole == "staff")
+			{
+				<div class="rowdisplay fullwidthbluecard" style="padding:10px 0 10px 0;gap:15px">
+					<table class="shadow newscard" cellpadding="0" cellspacing="0">
+						<tr>
+							<td class="newspic staffReport"></td>
+						</tr>
+						<tr>
+							<td class="newstext" style="text-align:center">
+								<p><a asp-action="viewFoodDonationRecord">View Food Donation Record</a></p>
+							</td>
+						</tr>
+					</table>
+					<table class="shadow newscard" cellpadding="0" cellspacing="0">
+						<tr>
+							<td class="newspic staffReport "></td>
+						</tr>
+						<tr>
+							<td class="newstext" style="text-align:center">
+								<p><a asp-action="viewMoneyDonationRecord">View Money Donation Record</a></p>
+							</td>
+						</tr>
+					</table>
+					<table class="shadow newscard" cellpadding="0" cellspacing="0">
+						<tr>
+							<td class="newspic staffReport"></td>
+						</tr>
+						<tr>
+							<td class="newstext" style="text-align:center">
+								<p><a asp-action="viewUserDetail">View All Users</a></p>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<br></br>
+
+			}
+			else if (@UserAccount.UserRole == "user")
+			{
+				<div class="text-center">
+					<h1 class="shadow-text display-4">WE HAVE GATHERED:</h1>
+					<br/>
+					<h2 class="shadow-text"><bold style="background-color:yellow;">@totalfood</bold> Amount of Food</h2>
+					<h2 class="shadow-text">RM <bold style="background-color:yellow;">@totalmoney </bold> of Money</h2>
+					<br/>
+					<h1 class="shadow-text display-4">Thank You For Your Contributions!</h1>
+				</div>
+			}
+
     </div>
 }
+</body>
 

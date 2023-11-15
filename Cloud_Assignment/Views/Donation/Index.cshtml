@@ -6,9 +6,83 @@
 <head>
     <link rel="stylesheet" href="~/css/style.css">
 </head>
+<style>
+	.fullwidthbluecard {
+		color: white;
+		background: rgba(0,0,0,0.6);
+		width: 100%;
+	}
+
+	.blacktextshadow { /*creates a shadow effect right below the text*/
+		text-shadow: 2px 2px black;
+	}
+
+	.rowdisplay {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.shadow { /*shadow place a shadow*/
+		box-shadow: 0 0 10px 3px black;
+	}
+
+	.newscard {
+		border-radius: 30px;
+		width: 400px;
+		height: 300px;
+		transition: transform 1s;
+	}
+
+		.newscard:hover {
+			transform: translateY(-10px);
+			box-shadow: 0 0 20px 3px white;
+		}
+
+	.newspic {
+		border-radius: 30px 30px 0 0;
+		padding: 10px;
+		width: 400px;
+		height: 300px;
+		margin: 0;
+	}
+
+	.newstext {
+		border-radius: 0 0 30px 30px;
+		padding: 10px;
+		background: white;
+		width: 400px;
+		height: 200px;
+		text-align: justify; /*align the text*/
+	}
+
+</style>
 <body>
 <h1>Contribute For The Greater Good</h1>
-<p><a asp-action="CreateFoodDonation">Donate Food</a></p>
 
-<p><a asp-action="CreateMoneyDonation">Donate Money</a></p>
+	<div class="rowdisplay fullwidthbluecard" style="padding:10px 0 10px 0;gap:15px">
+		<table class="shadow newscard" cellpadding="0" cellspacing="0">
+			<tr>
+				<td class="newspic foodDonation "></td>
+			</tr>
+			<tr>
+				<td class="newstext" style="text-align:center">
+					<a style="text-decoration:none;font-size:40px;" asp-action="CreateFoodDonation">Donate Food</a>
+				</td>
+			</tr>
+		</table>
+		<table class="shadow newscard" cellpadding="0" cellspacing="0">
+			<tr>
+				<td class="newspic moneyDonation "></td>
+			</tr>
+			<tr>
+				<td class="newstext" style="text-align:center">
+					<a style="text-decoration:none;font-size:40px;" asp-action="CreateMoneyDonation">Donate Money</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<br></br>
+
+
 </body>
