@@ -5,6 +5,13 @@
     background-position: center center;
 }
 
+.bodyImg {
+    background-image: url('/css/trulyLastMainBackground.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
 .headImage {
 }
 
