@@ -1,0 +1,122 @@
+﻿@model Cloud_Assignment.Controllers.DistributionScheduleRecordController.DistributionViewModel
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@using Cloud_Assignment.Models;
+@using Cloud_Assignment.Data;
+@inject UserManager<Cloud_AssignmentUser> UserManager
+
+@{
+    var UserAccount = await UserManager.GetUserAsync(User);
+}
+<style>
+    body {
+        background-color: lightblue;
+    }
+
+    h1 {
+        font-family: 'Trocchi', serif;
+        font-size: 38px;
+        font-weight: normal;
+        line-height: 48px;
+        margin: 0;
+    }
+
+    table {
+        margin: 10px;
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border: 2px solid #000;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    td {
+        padding: 15px;
+        background-color: #FAFAD2;
+    }
+
+    th {
+        background-color: #E0FFFF;
+    }
+
+    .btn {
+        text-decoration: none;
+        padding: 0.5rem;
+        border: 1px solid #333333;
+        border-radius: 20px;
+        background-color: #F0F8FF;
+    }
+
+        .btn:hover {
+            background-color: #FF6680;
+            color: #FFFFFF;
+        }
+</style>
+
+<form asp-controller="DistributionScheduleRecord" asp-action="Index" method="get">
+    <button class="btn" type="submit">Back</button>
+</form>
+<center>
+    <h1>Add Distribution Schedule Record</h1>
+    <hr />
+    <form asp-action="AddDistributionRecord" method="post" asp-controller="DistributionScheduleRecord"  onsubmit="validateForm(event)">
+        <table>
+            <tr>
+                <th><label asp-for="DistributionRecord!.RecordType">Record Type </label> </th>
+                <td><input asp-for="DistributionRecord!.RecordType" value="Distribute" required readonly /></td>
+                <td><span asp-validation-for="DistributionRecord!.RecordType"></span></td>
+            </tr>
+            <tr>
+                <th><label asp-for="DistributionRecord!.RecordId">Request Record ID </label> </th>
+                <td>
+                    <select asp-for="DistributionRecord!.RecordId" id="RecordId">
+                        <option value="">Select an Record ID </option>
+                        @foreach(var item in Model.RequestList!)
+                        {
+                            if(item.RequestStatus == "accept")
+                            {
+                                <option value="@item.RecordId">@item.RecordId</option>
+                            }
+                        }     
+                    </select>
+                </td>
+                <td><span asp-validation-for="DistributionRecord!.RecordId"></span></td>
+            </tr>
+            <tr>
+                <th><label asp-for="DistributionRecord!.DistributionStatus">Distribution Status </label> </th>
+                <td><input asp-for="DistributionRecord!.DistributionStatus" value="Pending" required readonly /></td>
+                <td><span asp-validation-for="DistributionRecord!.DistributionStatus"></span></td>
+            </tr>
+            <tr>
+                <th><label asp-for="DistributionRecord!.DOD">Date of Distribution </label> </th>
+                <td><input asp-for="DistributionRecord!.DOD" id="DOD"/></td>
+                <td><span asp-validation-for="DistributionRecord!.DOD"></span></td>
+            </tr>
+            <tr>
+                <th><label>Distributor </label></th>
+                <td><label>@UserAccount?.UserFullName</label></td>
+                <td></td>
+            </tr>
+            <tr>
+                <input asp-for="DistributionRecord!.DistributorId" value="@UserAccount?.Id" hidden />
+            </tr>
+        </table>
+        <input type="submit" name="submit" value="Add Schedule" class="btn" />
+    </form>
+</center>
+
+<script>
+    function validateForm(event){
+        var recordID = document.getElementById('RecordId').value;
+        var date = document.getElementById('DOD').value;
+        if (recordID == null || recordID == "") {
+            alert("Please select the actual request record ID! ");
+            event.preventDefault();
+        }else if(date == null || date == ""){
+            alert("Please enter the actual date time! ");
+            event.preventDefault();
+        }else{
+            alert("Distribution Schedule Record have been added! ");
+        }
+    }
+</script>
