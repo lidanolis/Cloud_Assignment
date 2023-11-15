@@ -1,0 +1,71 @@
+﻿body {
+    background-image: url('/css/definiteBackground.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.headImage {
+}
+
+.tailImage {
+    background-color: white;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 1.0);
+}
+
+.shadow-box {
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+    text-shadow: 2px 2px white;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 1.0);
+}
+
+.shadow-text {
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+    text-shadow: 2px 2px white;
+}
+
+li {
+    padding: 10px;
+    display: inline-block;
+    border-radius: 50%; /* Make it circular */
+    transition: background-color 0.5s, color 0.5s, transform 0.5s;
+}
+
+li:hover {
+    background-color: #21ded4;
+    transform: scale(1.1); /* Increase size on hover */
+}
+
+.linkChange {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    background-color: white; /* White background */
+    color: #0077cc; /* Link color */
+    text-decoration: none; /* Remove default underline */
+    border-radius: 20px; /* Make it oval-shaped */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition on hover */
+}
+
+    /* Hover styles */
+    .linkChange:hover {
+        background-color: #004466; /* Change background color on hover */
+        color: white; /* Change text color on hover */
+    }
+
+.logbtn {
+    text-decoration: none;
+    padding: 0.5rem;
+    border: 1px solid #333333;
+    border-radius: 10px;
+    background-color: #F0F8FF;
+}
+
+    .logbtn:hover {
+        background-color: #9966FF;
+        color: #FFFFFF;
+    }
