@@ -1,4 +1,4 @@
-﻿@model Cloud_Assignment.Models.FoodRequest
+﻿@model Cloud_Assignment.Models.RequestRecord
 @using Cloud_Assignment.Areas.Identity.Data
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<Cloud_AssignmentUser> UserManager
@@ -9,8 +9,14 @@
 	var UserAccount = await UserManager.GetUserAsync(User);
 }
 
-<!-- Bootstrap CSS -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+@if (TempData["Error"] != null)
+{
+	<div class="alert alert-danger" style="text-align: center;">
+		@TempData["Error"].ToString()
+	</div>
+}
 
 <div class="container mt-5">
 	<div class="row">
@@ -19,64 +25,39 @@
 			<hr />
 			<form asp-action="UpdateRequest" method="post">
 				<div class="form-group">
-					<label asp-for="RequestID">Request Id</label>
-					<input asp-for="RequestID" class="form-control" readonly />
+					<label asp-for="RecordId">Record Id</label>
+					<input asp-for="RecordId" class="form-control" readonly />
 				</div>
 				<div class="form-group">
 					<label asp-for="UserId">User Id</label>
 					<input asp-for="UserId" class="form-control" readonly />
 				</div>
 				<div class="form-group">
-					<label asp-for="ContactName">Contact Name</label>
-					<input asp-for="ContactName" class="form-control" readonly />
+					<label asp-for="FoodId">Food Id</label>
+					<input asp-for="FoodId" class="form-control" readonly />
 				</div>
 				<div class="form-group">
-					<label asp-for="Phone">Phone</label>
-					<input asp-for="Phone" class="form-control" readonly />
+					<label asp-for="FoodQuantity">Request Quantity</label>
+					<input asp-for="FoodQuantity" class="form-control" readonly />
 				</div>
 				<div class="form-group">
-					<label asp-for="Email">Email</label>
-					<input asp-for="Email" class="form-control" readonly />
+					<label asp-for="DOR">Request Date</label>
+					<input asp-for="DOR" class="form-control" readonly>
 				</div>
 				<div class="form-group">
-					<label asp-for="Address">Address</label>
-					<input asp-for="Address" class="form-control" readonly />
+					<label asp-for="RequestDesc">Request Description</label>
+					<textarea asp-for="RequestDesc" class="form-control" readonly></textarea>
 				</div>
+
 				<div class="form-group">
-					<label asp-for="Adults">Number of Adults</label>
-					<input asp-for="Adults" class="form-control" readonly />
-				</div>
-				<div class="form-group">
-					<label asp-for="Children">Number of Children</label>
-					<input asp-for="Children" class="form-control" readonly />
-				</div>
-				<div class="form-group">
-					<label asp-for="SpecialNeeds">Special Needs</label>
-					<textarea asp-for="SpecialNeeds" class="form-control" readonly></textarea>
-				</div>
-				<div class="form-group">
-					<label asp-for="FoodType">Preferred Food Type</label>
-					<textarea asp-for="FoodType" class="form-control" readonly></textarea>
-				</div>
-				<div class="form-group">
-					<label asp-for="DietaryRestrictions">Dietary Restrictions</label>
-					<textarea asp-for="DietaryRestrictions" class="form-control" readonly></textarea>
-				</div>
-				<div class="form-group">
-					<label asp-for="DeliveryDate">Preferred Delivery Date</label>
-					<input type="date" asp-for="DeliveryDate" class="form-control" readonly />
-				</div>
-				<div class="form-group">
-					<label asp-for="RequestDate">Request Date</label>
-					<input type="date" asp-for="RequestDate" class="form-control" readonly />
-				</div>
-				<div class="form-group">
-					<label asp-for="RequestStatus">Change Status</label>
+					<label asp-for="RequestStatus">Request Status</label>
 					<select asp-for="RequestStatus" class="form-control">
 						<option value="accept">accept</option>
 						<option value="deny">deny</option>
 						<option value="pending">pending</option>
 					</select>
+					<input name="RequestDate" value="@Model.DOR" hidden />
+					<input name="StaffId" value="@UserAccount?.Id" hidden />
 				</div>
 				<div class="form-group">
 					<div class="text-center">

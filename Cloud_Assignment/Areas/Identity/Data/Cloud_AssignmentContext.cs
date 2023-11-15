@@ -18,7 +18,6 @@ public class Cloud_AssignmentContext : IdentityDbContext<Cloud_AssignmentUser>
 
     public DbSet<DistributionSchedule> DistributionSchedule { get; set; }
     public DbSet<RequestRecord> RequestRecord { get; set; }
-	public DbSet<FoodRequest> FoodRequest { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder builder)
     {

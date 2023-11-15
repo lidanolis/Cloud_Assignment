@@ -21,35 +21,35 @@ namespace Cloud_Assignment.Controllers
 			return View();
 		}
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddFoodRequest()
-		{	
-			try
-			{
-				List<FoodRequest> foodRequest = await _context.FoodRequest.ToListAsync();
-				FoodRequest specificlist;
-				var request = new FoodRequest
-				{
-					UserId = Request.Form["UserId"],
-					RequestDate = DateTime.Now,
-					RequestStatus = "pending",
-					ContactName = Request.Form["ContactName"],
-					Phone = Request.Form["Phone"],
-					Email = Request.Form["Email"],
-					Address = Request.Form["Address"],
-					Adults = int.Parse(Request.Form["Adults"]),
-					Children = int.Parse(Request.Form["Children"]),
-					SpecialNeeds = Request.Form["SpecialNeeds"],
-					FoodType = Request.Form["FoodType"],
-					DietaryRestrictions = Request.Form["DietaryRestrictions"],
-					DeliveryDate = Convert.ToDateTime(Request.Form["DeliveryDate"]).Date,
-				};
-				_context.Add(request);
-				await _context.SaveChangesAsync();
-				return RedirectToAction("RequestForHelp");
-			}
-			catch (Exception ex) { return BadRequest("Error: " + ex.Message); }
-		}
+        public async Task<IActionResult> RequestFood()
+        {
+            List<InventoryRecord> foodList = await _context.InventoryRecord.ToListAsync();
+            return View(foodList);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddFoodRequest()
+        {
+            try
+            {
+                List<RequestRecord> foodRequest = await _context.RequestRecord.ToListAsync();
+                RequestRecord specificlist;
+                var request = new RequestRecord
+                {
+                    UserId = Request.Form["UserId"],
+                    requestType = "food",
+                    FoodId = int.Parse(Request.Form["FoodId"]),
+					FoodQuantity = int.Parse(Request.Form["FoodQuantity"]),
+                    RequestStatus = "pending",
+					RequestDesc = Request.Form["RequestDesc"],
+					DOR = DateTime.Now,
+                };
+                _context.Add(request);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("RequestFood");
+            }
+            catch (Exception ex) { return BadRequest("Error: " + ex.Message); }
+        }
 	}
 }
