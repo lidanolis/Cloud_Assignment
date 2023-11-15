@@ -1,0 +1,119 @@
+﻿@model Cloud_Assignment.Models.RequestRecord
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Cloud_AssignmentUser> UserManager
+@{
+    var UserAccount = await UserManager.GetUserAsync(User);
+}
+
+<style>
+    h1 {
+        color: white;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Helvetica', sans-serif;
+        background: linear-gradient(to bottom right, #F00B51, #83015F); /* Gradient Background */
+        background-size: cover;
+        background-attachment: fixed; /* Fixed background */
+        color: black; /* Text color */
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect */
+    }
+
+    th, td {
+        border: 1px solid #ddd; /* Light Gray */
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2; /* Light Grayish Blue */
+    }
+
+    tr {
+        background-color: #fff; /* White */
+    }
+
+    label {
+        font-weight: bold;
+        color: #333; /* Dark Gray */
+    }
+
+    input, select {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        margin-top: 5px;
+        background-color: #f9f9f9; /* Light Gray */
+        border: 1px solid #ddd; /* Light Gray */
+    }
+
+    .button {
+        display: inline-block;
+        padding: 15px 20px;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none;
+        background-color: gold /* Button Background Color */
+        color: black; /* Button Text Color */
+        border-radius: 30px; /* Rounded Corners */
+        transition: background-color 0.3s ease; /* Smooth Transition on Hover */
+    }
+
+        /* Hover Effect */
+        .button:hover {
+            background: white; /* Change Background Color on Hover */
+            color: #F00B51; /* Change Text Color on Hover */
+        }
+
+        /* Additional Styling for Focus (e.g., when tabbing through elements) */
+        .button:focus {
+            outline: none; /* Remove Default Focus Outline */
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.7); /* Add Box Shadow on Focus */
+        }
+
+</style>
+
+<center>
+    <h1>Request Record Details</h1>
+    <br />
+    <form method="get" asp-action="ViewDetail" asp-controller="DistributorRecord">
+        <table border='1'>
+            <tr>
+                <th><label asp-for="RecordId"> Record ID</label></th>
+                <td><input asp-for="RecordId" readonly /></td>
+            </tr>
+            <tr>
+                <th><label asp-for="UserId">User ID</label></th>
+                <td><input asp-for="UserId" readonly /></td>
+            </tr>
+            <tr>
+                <th><label asp-for="FoodId">Food ID</label></th>
+                <td><input asp-for="FoodId" readonly /></td>
+            </tr>
+            <tr>
+                <th><label asp-for="FoodQuantity">Quantity</label></th>
+                <td><input asp-for="FoodQuantity" readonly /></td>
+            </tr>
+            <tr>
+                <th><label asp-for="RequestStatus">Status</label></th>
+                <td><input asp-for="RequestStatus" readonly /></td>
+            </tr>
+            <tr>
+                <th><label asp-for="RequestDesc">Description</label></th>
+                <td><input asp-for="RequestDesc" readonly /></td>
+            </tr>
+            <tr>
+                <th><label asp-for="DOR">Date</label></th>
+                <td><input asp-for="DOR" readonly /></td>
+            </tr>
+        </table>
+    </form>
+</center>

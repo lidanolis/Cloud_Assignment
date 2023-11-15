@@ -1,0 +1,135 @@
+﻿@model List<DistributionSchedule>
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Cloud_AssignmentUser> UserManager
+@{
+	var UserAccount = await UserManager.GetUserAsync(User);
+}
+<style>
+	h1 {
+		color: white;
+	}
+
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: 'Helvetica', sans-serif;
+		background: linear-gradient(to bottom right, #F00B51, #83015F); /* Gradient Background */
+		background-size: cover;
+		background-attachment: fixed; /* Fixed background */
+		color: black; /* Text color */
+	}
+
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 20px;
+	}
+
+	.pattern-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0.1; /* Adjust the opacity of the pattern */
+		pointer-events: none; /* Allow interaction with elements behind the overlay */
+	}
+
+	table {
+		border-collapse: collapse;
+		border-radius: 5px;
+		width: 100%;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		background-color: white;
+	}
+
+	th, td {
+		border: 1px solid #dddddd;
+		text-align: left;
+		padding: 5px;
+	}
+
+	th {
+		background: white;
+		color: #F00B51;
+	}
+
+	tr {
+		background-color: white;
+	}
+
+	td {
+		color: #FFB3B2;
+	}
+
+	/* Optional: Hover effect on rows */
+
+
+	.button {
+		display: inline-block;
+		padding: 10px 15px;
+		font-size: 14px;
+		text-align: center;
+		text-decoration: none;
+		background-color: gold /* Button Background Color */
+		color: black; /* Button Text Color */
+		border-radius: 30px; /* Rounded Corners */
+		transition: background-color 0.3s ease; /* Smooth Transition on Hover */
+	}
+
+		/* Hover Effect */
+		.button:hover {
+			background: linear-gradient(to bottom right, #F00B51, #83015F); /* Change Background Color on Hover */
+			color: white; /* Change Text Color on Hover */
+		}
+
+		/* Additional Styling for Focus (e.g., when tabbing through elements) */
+		.button:focus {
+			outline: none; /* Remove Default Focus Outline */
+			box-shadow: 0 0 5px rgba(52, 152, 219, 0.7); /* Add Box Shadow on Focus */
+		}
+</style>
+
+<center><h1>View Distribution History</h1></center>
+<br />
+
+<center>
+	<table border="1">
+		<tr style="background-color: navajowhite">
+			<th>Distribution ID</th>
+			<th>RecordType</th>
+			<th>Record ID</th>
+			<th>Distribution Status</th>
+			<th>Request DateTime</th>
+			<th>Action 1</th>
+			<th>Action 2</th>
+		</tr>
+
+
+		@foreach (var item in Model)
+		{
+			var user = await UserManager.FindByIdAsync(@item.DistributorId!);
+			if (item.DistributionStatus == "Delivered" && item.DistributorId == UserAccount?.Id)
+			{
+				<tr>
+					<td>@item.DistributionId</td>
+					<td>@item.RecordType</td>
+					<td>@item.RecordId</td>
+					<td>@item.DistributionStatus</td>
+					<td>@item.DOD</td>
+					<form asp-action="Edit" asp-controller="DistributorRecord" asp-route-DistributionId="@item.DistributionId">
+					<td><button class="button" asp-action="DeliverOrder" asp-controller="DistributorRecord" asp-route-DistributionId="@item.DistributionId"> Edit</button></td>
+					</form>
+					<form asp-action="Delete" asp-controller="DistributorRecord" asp-route-DistributionId="@item.DistributionId">
+					<td><button class="button" asp-action="DeleteOrder" asp-controller="DistributorRecord" asp-route-DistributionId="@item.DistributionId"> Delete</button></td>
+					</form>
+				</tr>
+			}
+		}
+	</table>
+</center>
+
+<script>
+
+</script>

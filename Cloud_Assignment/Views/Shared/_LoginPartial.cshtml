@@ -51,8 +51,13 @@
         @if (userAccount.UserRole == "distributor")
         {
             <li class="nav-item">
-                <a id="viewDistribution" class="nav-link text-dark" asp-action="Index" asp-controller="DistributorRecord">
-                    View Distribution Schedule
+                <a id="distributionManagement" class="nav-link text-dark" asp-action="Index" asp-controller="DistributorRecord">
+                    MANAGE DISTRIBUTION
+                </a>
+            </li>
+            <li class="nav-item">
+                <a id="generateReport" class="nav-link text-dark" asp-action="ViewRecord" asp-controller="DistributorRecord">
+                    VIEW RECORD
                 </a>
             </li>
         }
