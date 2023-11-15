@@ -2,13 +2,13 @@
 using Cloud_Assignment.Models;
 using Cloud_Assignment.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Cloud_Assignment.Controllers
 {
     public class DistributionScheduleRecordController : Controller
     {
         private readonly Cloud_AssignmentContext _context;
+
         public DistributionScheduleRecordController(Cloud_AssignmentContext context)
         {
             _context = context;
@@ -19,11 +19,17 @@ namespace Cloud_Assignment.Controllers
             return View(records);
         }
 
+        public class DistributionViewModel
+        {
+            public List<RequestRecord>? RequestList { get; set; }
+            public DistributionSchedule? DistributionRecord { get; set; }
+        }
+
         public async Task<IActionResult> AddDistributionScheduleRecord()
         {
-            var recordId = await _context.RequestRecord.Select(r=>r.RecordId).ToListAsync();
-            ViewBag.RecordId = new SelectList(recordId);
-            return View();
+            var viewModel = new DistributionViewModel();
+            viewModel.RequestList = await _context.RequestRecord.ToListAsync();
+            return View(viewModel);
         }
 
         public async Task<IActionResult> ViewScheduleRecord()
@@ -51,15 +57,15 @@ namespace Cloud_Assignment.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddDistributionRecord(DistributionSchedule distributionSchedule)
+        public async Task<IActionResult> AddDistributionRecord(DistributionViewModel viewModel)
         {
             if(ModelState.IsValid)
             {
-                _context.DistributionSchedule.Add(distributionSchedule);
+                _context.DistributionSchedule.Add(viewModel.DistributionRecord!);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(distributionSchedule);
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -72,7 +78,7 @@ namespace Cloud_Assignment.Controllers
                 {
                     _context.DistributionSchedule.Update(distributionSchedule);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Index", "DistributionScheduleRecord");
+                    return RedirectToAction("ViewScheduleRecord", "DistributionScheduleRecord");
                 }
                 return View("EditDistributionScheduleRecord", distributionSchedule);
             }
@@ -95,7 +101,7 @@ namespace Cloud_Assignment.Controllers
             }
             _context.DistributionSchedule.Remove(record);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "DistributionScheduleRecord");
+            return RedirectToAction("ViewScheduleRecord", "DistributionScheduleRecord");
         }
     }
 }
