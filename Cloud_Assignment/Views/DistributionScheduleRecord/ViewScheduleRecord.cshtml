@@ -79,21 +79,13 @@
                 <td>@item.DistributionStatus </td>
                 <td>@item.DOD </td>
                 <td>@item.Distributor?.UserFullName </td>
-                 @if (UserAccount != null && UserAccount.Id == @item.DistributorId!)
-                { 
-                    <form asp-action="EditDistributionScheduleRecord" asp-controller="DistributionScheduleRecord" asp-route-DistributionId="@item.DistributionId">
-                    <td><button class="btn">Edit</button></td>
-                    </form>
-                    <form asp-action="DeleteDistributionRecord" asp-controller="DistributionScheduleRecord" asp-route-DistributionId="@item.DistributionId" 
-                    onsubmit="return deleteConfirm()">
-                    <td><button class="btn">Delete</button></td>
-                    </form>
-                }
-                else
-                {
-                    <td>No Permission</td>
-                    <td>No Permission</td>
-                } 
+                <form asp-action="EditDistributionScheduleRecord" asp-controller="DistributionScheduleRecord" asp-route-DistributionId="@item.DistributionId">
+                <td><button class="btn">Edit</button></td>
+                </form>
+                <form asp-action="DeleteDistributionRecord" asp-controller="DistributionScheduleRecord" asp-route-DistributionId="@item.DistributionId"
+                      onsubmit="return deleteConfirm()">
+                <td><button class="btn">Delete</button></td>
+                </form>
             </tr>
         }
     </table>
