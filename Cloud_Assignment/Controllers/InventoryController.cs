@@ -129,7 +129,7 @@ namespace Cloud_Assignment.Controllers
 
             var Donation = new FoodRecord
             {
-                RecordType = DonationOptions,
+                RecordType = passedType,
                 UserId = Request.Form["UserId"],
                 FoodId = foodID,
                 FoodQuantity = passedAmount,
