@@ -101,7 +101,7 @@ namespace Cloud_Assignment.Controllers
 
             _context.Add(Donation);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("CreateFoodDonation");
         }
 
 
@@ -129,7 +129,7 @@ namespace Cloud_Assignment.Controllers
             };
             _context.Add(Donation);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("CreateMoneyDonation");
         }
         
 
