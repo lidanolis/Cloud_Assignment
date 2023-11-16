@@ -50,22 +50,31 @@ namespace Cloud_Assignment.Controllers
 			{
 				if (ModelState.IsValid)
 				{
-					if (foodRequest.RequestStatus == "accept")
+					if (foodRequest.RequestStatus == "deny")
 					{
 						InventoryRecord specificInventory = await _context.InventoryRecord.FindAsync(foodRequest.FoodId);
 						if (specificInventory != null)
 						{
-							int newFoodTotal = specificInventory.FoodTotal.GetValueOrDefault() - foodRequest.FoodQuantity.GetValueOrDefault();
-
-							if (newFoodTotal < 0)
-							{
-								TempData["Error"] = "The request quantity is more than the inventory quantity of food, this execution cannot be processed.";
-								return View("EditRequest", foodRequest);
-							}
+							int newFoodTotal = specificInventory.FoodTotal.GetValueOrDefault() + foodRequest.FoodQuantity.GetValueOrDefault();
 							specificInventory.FoodTotal = newFoodTotal;
 							_context.InventoryRecord.Update(specificInventory);
 						}
 					}
+					else
+					{
+                        var Donation = new FoodRecord
+                        {
+                            RecordType = "distribution",
+                            UserId = Request.Form["StaffId"],
+                            FoodId = foodRequest.FoodId,
+                            FoodQuantity = foodRequest.FoodQuantity,
+                            DOR = DateTime.Now,
+                            Description = "Food Distribution"
+                        };
+
+                        _context.Add(Donation);
+                        await _context.SaveChangesAsync();
+                    }
 					_context.RequestRecord.Update(foodRequest);
 					await _context.SaveChangesAsync();
 					return RedirectToAction(nameof(ViewRequest));

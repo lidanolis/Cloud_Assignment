@@ -34,6 +34,17 @@ namespace Cloud_Assignment.Controllers
             try
             {
                 List<RequestRecord> foodRequest = await _context.RequestRecord.ToListAsync();
+                List<InventoryRecord> foodList = await _context.InventoryRecord.ToListAsync();
+                foreach(var item in foodList)
+                {
+                    if(item.FoodId == int.Parse(Request.Form["FoodId"]))
+                    {
+                        item.FoodTotal = item.FoodTotal - int.Parse(Request.Form["FoodQuantity"]);
+                    }
+                }
+                _context.InventoryRecord.UpdateRange(foodList);
+                await _context.SaveChangesAsync();
+
                 RequestRecord specificlist;
                 var request = new RequestRecord
                 {

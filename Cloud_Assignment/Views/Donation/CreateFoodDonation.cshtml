@@ -243,6 +243,9 @@
             if (existingFoodTypeComboBox == "" || FoodQuantityInput == "") {
                 showResult("Invalid Credentials");
                 event.preventDefault();
+            } else if (FoodQuantityInput <=0){
+                showResult("Invalid Amount");
+                event.preventDefault();
             }
         } else if (showCombo == "showOther") {
             var newFoodTypeTextBox = document.getElementById('foodType').value;
@@ -251,6 +254,9 @@
 
             if (newFoodTypeTextBox == "" || newFoodDescTextBox == "" || FoodQuantityInput == "") {
                 showResult("Invalid Credentials");
+                event.preventDefault();
+            } else if (FoodQuantityInput <= 0) {
+                showResult("Invalid Amount");
                 event.preventDefault();
             }
         } else {

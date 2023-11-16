@@ -100,17 +100,20 @@
 					<td>@item.RequestStatus</td>
 
 					<td class="action-buttons">
-						@if (item.RequestStatus != "accept")
+						@if (item.RequestStatus == "pending")
 						{
 							<form asp-action="EditRequest" asp-route-RecordId="@item.RecordId" method="post">
 								<button type="submit">Edit</button>
 							</form>
 						}
-						<form asp-action="DeleteRequest" asp-route-RecordId="@item.RecordId" method="post">
-							<button type="submit" class="btn-delete" style="background-color: #ff2121">
-								Delete
-							</button>
-						</form>
+						@if (item.RequestStatus != "pending")
+						{
+							<form asp-action="DeleteRequest" asp-route-RecordId="@item.RecordId" method="post">
+								<button type="submit" class="btn-delete" style="background-color: #ff2121">
+									Delete
+								</button>
+							</form>
+						}
 					</td>
 				</tr>
 			}

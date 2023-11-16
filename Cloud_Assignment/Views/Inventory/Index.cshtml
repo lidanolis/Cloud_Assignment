@@ -363,6 +363,9 @@
                 if (existingFoodTypeComboBox == "" || ModificationDesc == "" || selectedDonationOption == "" || FoodQuantityInput == "") {
                     showFoodResult("Invalid Credentials");
                     event.preventDefault();
+                } else if (selectedDonationOption != "Modify" && FoodQuantityInput <= 0) {
+                    showFoodResult("Invalid Amount");
+                    event.preventDefault();
                 }
                 else {
                     var PassedDonationAmount = document.getElementById("PassedDonationAmount");
@@ -420,6 +423,9 @@
                 if (newFoodType == "" || newFoodTypeTextBox == "" || ModificationDesc == "" || selectedDonationOption == "" || FoodQuantityInput == "") {
                     showFoodResult("Invalid Credentials");
                     event.preventDefault();
+                } else if (FoodQuantityInput <= 0) {
+                    showFoodResult("Invalid Amount");
+                    event.preventDefault();
                 }
             }
         }catch(err){
@@ -450,6 +456,9 @@
             var SpecificFinancial = document.getElementById('SpecificFinancial').value;
             if (MoneyAmountInput == "" || ChangeDesc == "") {
                 showResult("Invalid Credentials");
+                event.preventDefault();
+            } else if (selectedOption != "Modify" && parseFloat(MoneyAmountInput) <= 0) {
+                showResult("Invalid Amount");
                 event.preventDefault();
             }
             else {
