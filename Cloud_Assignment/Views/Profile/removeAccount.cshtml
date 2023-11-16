@@ -6,7 +6,61 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     var userAccount = await UserManager.GetUserAsync(User);
 }
+<style>
+    body {
+        background-color: lightblue;
+    }
 
+    h1 {
+        font-family: 'Trocchi', serif;
+        font-size: 38px;
+        font-weight: normal;
+        line-height: 48px;
+        margin: 0;
+    }
+
+    table {
+        margin: 10px;
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border: 2px solid #000;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    td {
+        padding: 15px;
+        background-color: lightgrey;
+    }
+
+    th {
+        background-color: lightblue;
+    }
+
+    .btnact {
+        width:100%;
+        text-decoration: none;
+        padding: 0.5rem;
+        border: 1px solid #333333;
+        border-radius: 10px;
+        background-color: #F0F8FF;
+    }
+
+        .btnact:hover {
+            background-color: #9966FF;
+            color: #FFFFFF;
+        }
+
+    .textboxdsg {
+        width: 100%;
+        padding: 10px; /* Add padding to the textbox */
+        border: 1px solid #ccc; /* Add a border to the textbox */
+        border-radius: 5px; /* Add rounded corners */
+        color: #333; /* Set the text color */
+        font-size: 14px; /* Set the font size */
+    }
+</style>
+<body>
 <h1>Delete Account</h1>
 <h2>Are You Sure You Want To Delete Your Account?</h2>
 <br/>
@@ -16,20 +70,22 @@
         <table>
             <tr>
                 <th><label>User Information</label></th>
-                <td><input name="UserFullName" value="@userAccount?.UserFullName" readonly /></td>
-                <td><input name="UserId" value="@userAccount.Id" hidden /></td>
+                    <th><input class="textboxdsg" name="UserFullName" value="@userAccount?.UserFullName" readonly /></th>
+                <th><input name="UserId" value="@userAccount.Id" hidden /></th>
             </tr>
             <tr>
                 <td>
-                    <input type="submit" id="submitbutton" name="submit" asp-controller="Profile" asp-action="Index" value="CANCEL DELETION" />
+                        <input class="btnact" type="submit" id="submitbutton" name="submit" asp-controller="Profile" asp-action="Index" value="CANCEL DELETION" />
                 </td>
                 <td>
-                    <input type="submit" id="submitbutton" name="submit" value="DELETE ACCOUNT" />
+                        <input class ="btnact" style="background-color:red;" type="submit" id="submitbutton" name="submit" value="DELETE ACCOUNT" />
                 </td>
+                <td></td>
             </tr>
         </table>
     </form>
 </center>
 <br />
 <br />
+</body>
 

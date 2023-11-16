@@ -137,9 +137,9 @@
                 <td class="action-buttons">
                     <form asp-action="EditInventory" asp-controller="Inventory" asp-route-foodId="@item.FoodId">
                             <button>EDIT</button>
-
-                    <button asp-action="RemoveInventory" asp-controller="Inventory" asp-route-fdId="@item.FoodId" style="background-color:red;">REMOVE</button>
-
+                        @if (!(Model.cantRemoveList.Contains((int)item.FoodId))) {
+                            <button asp-action="RemoveInventory" asp-controller="Inventory" asp-route-fdId="@item.FoodId" style="background-color:red;">REMOVE</button>
+                        }
                     </form>
                 </td>
                 </tr>
