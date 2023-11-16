@@ -6,7 +6,7 @@
 <center>
     <h1>Update Money Donation Record:</h1>
     <br /><hr /><br />
-    <form method="post" asp-action="UpdateMoneyDonationRecord" asp-controller="Donation">
+    <form method="post" asp-action="UpdateMoneyDonationRecord" asp-controller="Home">
         <table class="table table-bordered border border-secondary">
             <tr>
                 <th><label asp-for="RecordId" class="form-label"></label></th>
@@ -14,8 +14,8 @@
             </tr>
             <tr>
                 <th><label asp-for="RecordType" class="form-label"></label></th>
-                <td><input asp-for="RecordType" class="form-control" /></td>
-                <td><span asp-validation-for="RecordType"></span></td>
+                <td><input asp-for="RecordType" readonly class="form-control" /></td>
+                @* <td><span asp-validation-for="RecordType"></span></td> *@
             </tr>
             <tr>
                 <th><label asp-for="UserId" class="form-label"></label></th>
@@ -33,28 +33,28 @@
             </tr>
             <tr>
                 <th><label asp-for="CurrencyType" class="form-label"></label></th>
-                <td><input asp-for="CurrencyType" class="form-control" /></td>
-                <td><span asp-validation-for="CurrencyType"></span></td>
+                <td><input asp-for="CurrencyType" readonly class="form-control" /></td>
+                @* <td><span asp-validation-for="CurrencyType"></span></td> *@
             </tr>
             <tr>
                 <th><label asp-for="Amount" class="form-label"></label></th>
-                <td><input asp-for="Amount" class="form-control" /></td>
-                <td><span asp-validation-for="Amount"></span></td>
+                <td><input asp-for="Amount" readonly class="form-control" /></td>
+                @* <td><span asp-validation-for="Amount"></span></td> *@
             </tr>
             <tr>
                 <th><label asp-for="Balance" class="form-label"></label></th>
-                <td><input asp-for="Balance" class="form-control" /></td>
-                <td><span asp-validation-for="Balance"></span></td>
+                <td><input asp-for="Balance" readonly class="form-control" /></td>
+                @* <td><span asp-validation-for="Balance"></span></td> *@
             </tr>
             <tr>
                 <th><label asp-for="DOR" class="form-label"></label></th>
                 <td><input asp-for="DOR" class="form-control" /></td>
-                <td><span asp-validation-for="DOR"></span></td>
+                @* <td><span asp-validation-for="DOR"></span></td> *@
             </tr>
             <tr>
                 <th><label asp-for="Description" class="form-label"></label></th>
                 <td><input asp-for="Description" class="form-control" /></td>
-                <td><span asp-validation-for="Description"></span></td>
+@*                 <td><span asp-validation-for="Description"></span></td> *@
             </tr>
         </table>
         <button type="submit" class="btn btn-info">

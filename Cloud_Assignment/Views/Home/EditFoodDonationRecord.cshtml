@@ -32,7 +32,16 @@
             </tr>
             <tr>
                 <th><label asp-for="FoodId" class="form-label"></label></th>
-                <td><input asp-for="FoodId" readonly class="form-control" /></td>
+                <td>
+                    @if (Model.FoodId == null)
+                    {
+                        <span class="text-danger">Food Type Removed!</span>
+                    }
+                    else
+                    {
+                        <input asp-for="FoodId" readonly class="form-control" />
+                    }
+                </td>
             </tr>
             <tr>
                 <th><label asp-for="FoodQuantity" class="form-label"></label></th>
@@ -41,12 +50,12 @@
             <tr>
                 <th><label asp-for="DOR" class="form-label"></label></th>
                 <td><input asp-for="DOR" class="form-control" /></td>
-                <td><span asp-validation-for="DOR" class="text-danger"></span></td>
+                @* <td><span asp-validation-for="DOR" class="text-danger"></span></td> *@
             </tr>
             <tr>
                 <th><label asp-for="Description" class="form-label"></label></th>
                 <td><input asp-for="Description" class="form-control" /></td>
-                <td><span asp-validation-for="Description" class="text-danger"></span></td>
+                @* <td><span asp-validation-for="Description" class="text-danger"></span></td> *@
             </tr>
         </table>
 
