@@ -4,7 +4,7 @@
 @inject UserManager<Cloud_AssignmentUser> UserManager
 @{
     ViewData["Title"] = "ViewScheduleRecord";
-    var UserAccount = await UserManager.GetUserAsync(User);
+    var UserList = UserManager.Users;
 }
 
 <style>
@@ -70,15 +70,19 @@
         </tr>
         @foreach (var item in Model)
         {
-            var user = await UserManager.GetUserAsync(User);
-
             <tr>
                 <td>@item.DistributionId </td>
                 <td>@item.RecordType </td>
                 <td>@item.RecordId </td>
                 <td>@item.DistributionStatus </td>
                 <td>@item.DOD </td>
-                <td>@item.Distributor?.UserFullName </td>
+                @foreach(var user in UserList)
+                {
+                    if(user.Id == item.DistributorId)
+                    {
+                        <td>@user.UserFullName </td>
+                    }
+                }
                 <form asp-action="EditDistributionScheduleRecord" asp-controller="DistributionScheduleRecord" asp-route-DistributionId="@item.DistributionId">
                 <td><button class="btn">Edit</button></td>
                 </form>

@@ -1,6 +1,10 @@
 ﻿@model List<RequestRecord>
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Cloud_AssignmentUser> UserManager
 @{
     ViewData["Title"] = "Index";
+    var UserList = UserManager.Users;
 }
 
 <style>
@@ -59,7 +63,6 @@
     <table>
         <tr>
             <th>Record ID</th>
-            <th>Request Type</th>
             <th>Request Date</th>
             <th>Request Status</th>
             <th>Requestor</th>
@@ -72,10 +75,15 @@
             {
                 <tr>
                     <td>@item.RecordId</td>
-                    <td>@item.requestType</td>
                     <td>@item.DOR</td>
                     <td>@item.RequestStatus</td>
-                    <td>@item.User?.UserFullName</td>
+                    @foreach(var user in UserList)
+                    {
+                        if(user.Id == item.UserId)
+                        {
+                            <td>@user.UserFullName</td>
+                        }
+                    }
                     <td>@item.FoodId</td>
                     <td>@item.FoodQuantity</td>
                 </tr>
