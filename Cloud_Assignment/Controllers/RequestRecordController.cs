@@ -50,7 +50,7 @@ namespace Cloud_Assignment.Controllers
 			{
 				if (ModelState.IsValid)
 				{
-					if (foodRequest.RequestStatus == "deny")
+					if (foodRequest.RequestStatus == "deny" && foodRequest.FoodId != null)
 					{
 						InventoryRecord specificInventory = await _context.InventoryRecord.FindAsync(foodRequest.FoodId);
 						if (specificInventory != null)

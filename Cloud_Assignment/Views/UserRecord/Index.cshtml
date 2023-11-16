@@ -8,6 +8,16 @@
     var userList = Model.emailList;
 
 }
+<style>
+    .textboxdsg {
+        width: 100%;
+        padding: 10px; /* Add padding to the textbox */
+        border: 1px solid #ccc; /* Add a border to the textbox */
+        border-radius: 5px; /* Add rounded corners */
+        color: #333; /* Set the text color */
+        font-size: 14px; /* Set the font size */
+    }
+</style>
 
 <h1>Register A New User</h1>
 <h2 class="shadow-text">Create a new account.</h2>
@@ -42,7 +52,7 @@
                     <span asp-validation-for="@Model.registerMode.Input.DoB" class="text-danger"></span>
                 </div>
                 <div class="form-floating mb-3">
-                    <select name="userType" id="userType">
+                    <select class="textboxdsg" name="userType" id="userType">
                         <option value="user">User</option>
                         <option value="staff">Staff</option>
                         <option value="distributor">Distributor</option>

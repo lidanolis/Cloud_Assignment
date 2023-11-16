@@ -2,6 +2,7 @@
 using Cloud_Assignment.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Permissions;
 using static Cloud_Assignment.Controllers.DonationController;
 using static Cloud_Assignment.Controllers.InventoryController;
 
@@ -18,6 +19,9 @@ namespace Cloud_Assignment.Controllers
         {
             public List<InventoryRecord>? FoodList { get; set; }
             public List<FinancialRecord>? FinancialRecord { get; set; }
+
+            public List<int> cantRemoveList { get; set; }
+
         }
 
         public async Task<IActionResult> Index()
@@ -25,11 +29,19 @@ namespace Cloud_Assignment.Controllers
             var HistoryList = new InventoryViewModel();
             HistoryList.FoodList = new List<InventoryRecord>();
             HistoryList.FinancialRecord = new List<FinancialRecord>();
-            if (_context != null)
+            var pendingFood = new List<int>();
+            List<RequestRecord> requestList = new List<RequestRecord>();
+            requestList = await _context.RequestRecord.ToListAsync();
+            HistoryList.FoodList = await _context.InventoryRecord.ToListAsync();
+            HistoryList.FinancialRecord = await _context.FinancialRecord.ToListAsync();
+            foreach (var record in requestList)
             {
-                HistoryList.FoodList = await _context.InventoryRecord.ToListAsync();
-                HistoryList.FinancialRecord = await _context.FinancialRecord.ToListAsync();
+                if (record.RequestStatus == "pending" && !(pendingFood.Contains((int)record.FoodId)))
+                {
+                    pendingFood.Add((int)record.FoodId);
+                }
             }
+            HistoryList.cantRemoveList = pendingFood;
             return View(HistoryList);
         }
 
@@ -176,6 +188,19 @@ namespace Cloud_Assignment.Controllers
             }
             _context.FoodRecord.UpdateRange(foodList);
             await _context.SaveChangesAsync();
+            List<RequestRecord> requestList = new List<RequestRecord>();
+            requestList = await _context.RequestRecord.ToListAsync();
+
+            foreach (var item in requestList)
+            {
+                if (item.FoodId == fdId)
+                {
+                    item.FoodId = null;
+                }
+            }
+            _context.RequestRecord.UpdateRange(requestList);
+            await _context.SaveChangesAsync();
+
             _context.InventoryRecord.Remove(SpecificFood);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
