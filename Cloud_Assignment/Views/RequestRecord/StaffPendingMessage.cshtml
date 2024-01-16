@@ -1,0 +1,136 @@
+﻿@model List<KeyValuePair<RequestRecord, string>>
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Cloud_AssignmentUser> UserManager
+
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var UserAccount = await UserManager.GetUserAsync(User);
+}
+
+<style>
+	body {
+		font-family: 'Arial', sans-serif;
+		background-color: #f4f4f4;
+	}
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 25px 0;
+		font-size: 0.9em;
+		min-width: 400px;
+		border-radius: 5px 5px 0 0;
+		overflow: hidden;
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+	}
+
+	.allwhite {
+		background-color: white;
+	}
+
+	th, td {
+		padding: 12px 15px;
+		text-align: center;
+	}
+
+	th {
+		background-color: #009879;
+		color: #ffffff;
+		text-transform: uppercase;
+	}
+
+	tr {
+		border-bottom: 1px solid #dddddd;
+	}
+
+		tr:nth-of-type(even) {
+			background-color: #f3f3f3;
+		}
+
+		tr:last-of-type {
+			border-bottom: 2px solid #009879;
+		}
+
+	.action-buttons {
+		display: flex;
+		justify-content: center;
+	}
+
+		.action-buttons form, .action-buttons button {
+			margin-right: 10px;
+		}
+
+		.action-buttons button {
+			padding: 5px 10px;
+			background-color: #009879;
+			color: white;
+			border: none;
+			cursor: pointer;
+		}
+
+			.action-buttons button:hover {
+				background-color: #007961;
+			}
+</style>
+
+<center>
+	<h1>Pending Request</h1>
+	<table class="allwhite">
+		<thead>
+			<tr>
+				<th>Request Date</th>
+				<th>User Id</th>
+				<th>Request Id</th>
+				<th>Request Food Id</th>
+				<th>Request Quantity</th>
+				<th>Request Status</th>
+				<th>Request Description</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>@item.Key.DOR</td>
+					<td>@item.Key.UserId</td>
+					<td>@item.Key.RecordId</td>
+					<td>@item.Key.FoodId</td>
+					<td>@item.Key.FoodQuantity</td>
+					<td>@item.Key.RequestStatus</td>
+					<td>@item.Key.RequestDesc</td>
+					<td class="action-buttons">
+						<form asp-action="DeleteMessage" method="post" asp-route-RecordId="@item.Key.RecordId" asp-route-deleteToken="@item.Value">
+							<input type="hidden" name="action" value="accept" />
+							<input type="hidden" name="RecordId" value="@item.Key.RecordId" />
+							<input type="hidden" name="StaffId" value="@UserAccount.Id" />
+							<input type="hidden" name="FoodId" value="@item.Key.FoodId" />
+							<input type="hidden" name="UserId" value="@item.Key.UserId" />
+							<input type="hidden" name="DOR" value="@item.Key.DOR" />
+							<input type="hidden" name="FoodQuantity" value="@item.Key.FoodQuantity" />
+							<input type="hidden" name="RequestDesc" value="@item.Key.RequestDesc" />
+							<button type="submit">Accept</button>
+						</form>
+
+						<form asp-action="DeleteMessage" method="post" asp-route-RecordId="@item.Key.RecordId" asp-route-deleteToken="@item.Value">
+							<input type="hidden" name="action" value="deny" />
+							<input type="hidden" name="RecordId" value="@item.Key.RecordId" />
+							<input type="hidden" name="StaffId" value="@UserAccount.Id" />
+							<input type="hidden" name="FoodId" value="@item.Key.FoodId" />
+							<input type="hidden" name="UserId" value="@item.Key.UserId" />
+							<input type="hidden" name="DOR" value="@item.Key.DOR" />
+							<input type="hidden" name="FoodQuantity" value="@item.Key.FoodQuantity" />
+							<input type="hidden" name="RequestDesc" value="@item.Key.RequestDesc" />
+							<button type="submit" class="btn-delete" style="background-color: #ff2121">
+								Deny
+							</button>
+						</form>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</center>
+
+

@@ -60,7 +60,25 @@
 
 <div class="container">
     <center>
-        <h1>Food Request</h1>
+        <h1>Food Request Form</h1>
+        @{
+            var successScript = TempData["SuccessScript"] as string;
+            if (!string.IsNullOrEmpty(successScript))
+            {
+                @Html.Raw(successScript)
+            }
+        }
+        <div class="col-md-4">
+            <div class="form-section">
+                <p>Notification: </p>
+                <a asp-controller="Request" asp-action="PendingMessage" asp-route-userId="@UserAccount?.Id" class="btn btn-primary">Pending</a>
+                <a asp-controller="RequestRecord" asp-action="ViewRequestByUserIdAndStatus"
+                   asp-route-userId="@UserAccount?.Id" asp-route-requestStatus="accept" class="btn btn-success">Accept</a>
+                <a asp-controller="RequestRecord" asp-action="ViewRequestByUserIdAndStatus"
+                   asp-route-userId="@UserAccount?.Id" asp-route-requestStatus="deny" class="btn btn-danger">Deny</a>
+
+            </div>
+        </div>
         <form asp-action="AddFoodRequest" method="post" id="foodRequestForm" class="needs-validation" novalidate>
             <div class="form-section">
                 <h2>Food List</h2>
