@@ -84,7 +84,7 @@
 <center>
     <h1>Complete Distribution:</h1>
     <br />
-    <form method="post" asp-action="CompleteOrder" asp-controller="DistributorRecord" onsubmit="return validateStatus()">
+    <form method="post" asp-action="CompleteOrder" asp-controller="DistributorRecord" onsubmit="return validateStatus()" method="post" enctype="multipart/form-data">
         <table border='1'>
             <tr>
                 <th><label asp-for="DistributionId">Distribution ID</label></th>
@@ -116,6 +116,12 @@
             <tr>
                 <th><label asp-for="DistributorId">Distributor ID</label></th>
                 <td><input asp-for="DistributorId" value="@UserAccount?.Id" readonly /></td>
+            </tr>
+            <tr>
+                <th><label asp-for="ImageURL">Deliver Evidence</label></th>
+                <td>
+                    <input type="file" name="imagefile" accept="image/*" />
+                </td>
             </tr>
         </table>
         <br />

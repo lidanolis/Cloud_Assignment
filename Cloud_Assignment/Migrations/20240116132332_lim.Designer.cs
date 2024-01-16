@@ -4,6 +4,7 @@ using Cloud_Assignment.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cloud_Assignment.Migrations
 {
     [DbContext(typeof(Cloud_AssignmentContext))]
-    partial class Cloud_AssignmentContextModelSnapshot : ModelSnapshot
+    [Migration("20240116132332_lim")]
+    partial class lim
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,12 +121,6 @@ namespace Cloud_Assignment.Migrations
 
                     b.Property<string>("DistributorId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ImageS3Key")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageURL")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RecordId")
                         .HasColumnType("int");
@@ -231,25 +228,6 @@ namespace Cloud_Assignment.Migrations
                     b.HasKey("FoodId");
 
                     b.ToTable("InventoryRecord");
-                });
-
-            modelBuilder.Entity("Cloud_Assignment.Models.NewsletterEmail", b =>
-                {
-                    b.Property<int>("NewsletterEmailId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NewsletterEmailId"));
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("NewsletterEmailId");
-
-                    b.ToTable("NewsletterEmail");
                 });
 
             modelBuilder.Entity("Cloud_Assignment.Models.RequestRecord", b =>

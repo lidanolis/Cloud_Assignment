@@ -102,6 +102,7 @@
 			<th>Record ID</th>
 			<th>Distribution Status</th>
 			<th>Request DateTime</th>
+			<th>Evidence</th>
 			<th>Action 1</th>
 			<th>Action 2</th>
 		</tr>
@@ -118,6 +119,7 @@
 					<td>@item.RecordId</td>
 					<td>@item.DistributionStatus</td>
 					<td>@item.DOD</td>
+					<td><img src="@item.ImageURL" width="200px" height="200px" /></td>
 					<form asp-action="Edit" asp-controller="DistributorRecord" asp-route-DistributionId="@item.DistributionId">
 					<td><button class="button" asp-action="DeliverOrder" asp-controller="DistributorRecord" asp-route-DistributionId="@item.DistributionId"> Edit</button></td>
 					</form>
