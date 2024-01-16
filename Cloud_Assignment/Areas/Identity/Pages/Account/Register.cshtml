@@ -38,12 +38,31 @@
                 <label asp-for="Input.DoB">Date Of Birth</label>
                 <span asp-validation-for="Input.DoB" class="text-danger"></span>
             </div>
+            <div class="form-check" style="background-color: lightgrey">
+                <input type="hidden" id="newsLetter" name="newsLetter" value="false"/>
+                <div style="padding-left: 10px;">
+                <input type="checkbox" name="newsLetterCheck" class="form-check-input" aria-required="true" onchange="makeChange()"/>
+                </div>
+                <label class="form-check-label" style="padding-right: 10px;">Subscribe To Our Newsletter</label>
+            </div>
+            <br/>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
 </div>
 </center>
 </body>
+<script>
+    function makeChange() {
+        var newsLetter = document.getElementById('newsLetter');
+        if (newsLetter.value == "true") {
+            newsLetter.value = "false";
+        } else {
+            newsLetter.value = "true";
+        }
+    }
+</script>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

@@ -1,0 +1,236 @@
+﻿@model List<NewsletterEmail>
+@using Cloud_Assignment.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@using Cloud_Assignment.Models;
+@using Cloud_Assignment.Data;
+@inject UserManager<Cloud_AssignmentUser> UserManager
+
+@{
+    var userAccount = await UserManager.GetUserAsync(User);
+    var filteredEmail = Model.FirstOrDefault(email => email.UserId == userAccount.Id);
+    var subscriptionList = Model;
+    var emailInUse = filteredEmail != null ? userAccount.Email : "";
+    var emailsub = filteredEmail != null ? filteredEmail.Email : "";
+    var emailSubId = filteredEmail != null ? filteredEmail.NewsletterEmailId : 0;
+}
+<style>
+    body {
+        background-color: lightblue;
+    }
+
+    h1 {
+        font-family: 'Trocchi', serif;
+        font-size: 38px;
+        font-weight: normal;
+        line-height: 48px;
+        margin: 0;
+    }
+
+    table {
+        margin: 10px;
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border: 2px solid #000;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    td {
+        padding: 15px;
+        background-color: lightgrey;
+    }
+
+    th {
+        background-color: lightblue;
+    }
+
+    .btnact {
+        width: 100%;
+        text-decoration: none;
+        padding: 0.5rem;
+        border: 1px solid #333333;
+        border-radius: 10px;
+        background-color: #F0F8FF;
+    }
+
+        .btnact:hover {
+            background-color: #9966FF;
+            color: #FFFFFF;
+        }
+
+    .textboxdsg {
+        width: 100%;
+        padding: 10px; /* Add padding to the textbox */
+        border: 1px solid #ccc; /* Add a border to the textbox */
+        border-radius: 5px; /* Add rounded corners */
+        color: #333; /* Set the text color */
+        font-size: 14px; /* Set the font size */
+    }
+</style>
+<body>
+    @if (filteredEmail != null)
+{
+    <center>
+        <h1>Manage Newsletters Subscription</h1>
+            <br /><hr /><br />
+            <form onsubmit="validateUpdateCredentials(event)" method="post" asp-action="updatelettersAfterLogin" asp-controller="SNS">
+                <table>
+                    <tr id="useNewEmailRow">
+                        <td><label>Enter Email: </label></td>
+                        <td><input id="emailId" class="textboxdsg" type="email" name="emailId" placeholder="e.g.aaa@gmail.com" value=@emailsub /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class="btnact" style="background-color:lightgreen;" type="submit" value="Update Email" />
+                        </td>
+                        <td>
+                            <input class="btnact" type="submit" id="submitbutton" name="submit" asp-controller="Profile" asp-action="Index" value="BACK" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="hidden" id="currentEmail" name="currentEmail" value=@emailsub />
+                        </td>
+                        <td>
+                            <input type="hidden" id="emailSubId" name="emailSubId" value=@emailSubId />
+                        </td>
+                    </tr>
+                </table>
+
+            </form>
+    </center>
+}
+else
+{
+    <center>
+        <h1>Subscribe to the Newsletters</h1>
+        <br /><hr /><br />
+            <form onsubmit="validateCredentials(event)" method="post" asp-action="registerNewlettersAfterLogin" asp-controller="SNS">
+            <table>
+                <tr id="useNewEmailRow">
+                    <td><label>Enter Email: </label></td>
+                        <td><input id="emailId" class="textboxdsg" type="email" name="emailId" placeholder="e.g.aaa@gmail.com" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="newsLetterCheck" class="form-check-input" aria-required="true" onchange="makeChange()" />
+                    </td>
+                    <td>
+                    <label class="form-check-label" style="padding-right: 10px;">Use Registration Email</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="btnact" style="background-color:lightgreen;" type="submit" value="Subscribe for Newsletters!" />
+                    </td>
+                    <td>
+                        <input class="btnact" type="submit" id="submitbutton" name="submit" asp-controller="Profile" asp-action="Index" value="BACK" />
+                    </td>
+                </tr>
+                <tr>
+                        <td><input type="hidden" id="newsLetter" name="newsLetter" value="false" /></td>
+                        <td><input type="hidden" id="emailInUse" name="emailInUse" value=@emailInUse /></td>
+                </tr>
+            </table>
+
+        </form>
+    </center>
+}
+</body>
+
+<script>
+    function validateUpdateCredentials(event) {
+        console.log("here1");
+        var userEmail = document.getElementById('emailId').value;
+        console.log("here2");
+        var gmailRegex = /@@gmail\.com$/;
+
+        if (gmailRegex.test(userEmail)) {
+            try {
+                if (userEmail == "") {
+                    alert("Email Input Field Cannot Be Empty");
+                    event.preventDefault();
+                }
+                else {
+                    console.log("here5");
+                    var udList = @Html.Raw(Json.Serialize(subscriptionList));
+                    var udListString = JSON.stringify(udList);
+                    var udListJSON = JSON.parse(udListString);
+                    var checkingEmail = userEmail;
+
+                    var foundObject = udListJSON.find(user => user.email === checkingEmail);
+
+                    if (foundObject != null) {
+                        alert("Email Already In Use");
+                        event.preventDefault();
+                    } else {
+                        var udListString = JSON.stringify(udListJSON);
+                        console.log(udListString);
+                        alert("New Email Subscription Added");
+                    }
+                }
+            } catch (err) {
+                alert("error-"+err);
+                event.preventDefault();
+            }
+        } else {
+            alert("Invalid Email");
+            event.preventDefault();
+        }
+    }
+
+    function validateCredentials(event) {
+        try {
+            var userEmail = document.getElementById('emailId').value;
+            var newsLetter = document.getElementById('newsLetter').value;
+            var emailInUse = document.getElementById('emailInUse').value;
+
+            if (userEmail == "" && newsLetter == "false") {
+                alert("Email Input Field Cannot Be Empty");
+                event.preventDefault();
+            }
+            else {
+                var udList = @Html.Raw(Json.Serialize(subscriptionList));
+                var udListString = JSON.stringify(udList);
+                var udListJSON = JSON.parse(udListString);
+
+                var checkingEmail = userEmail;
+                if (newsLetter == "true") {
+                    checkingEmail = emailInUse;
+                }
+
+                var foundObject = udListJSON.find(user => user.email === checkingEmail);
+
+                if (foundObject != null) {
+                    alert("Email Already In Use");
+                    event.preventDefault();
+                }else{
+                    var udListString = JSON.stringify(udListJSON);
+                    console.log(udListString);
+                    alert("Email Subscription Added");
+                }
+            }
+        } catch (err) {
+            alert(err);
+            event.preventDefault();
+        }
+
+    }
+
+    function makeChange() {
+        var newsLetter = document.getElementById('newsLetter');
+        if (newsLetter.value == "true") {
+            newsLetter.value = "false";
+            var row = document.getElementById('useNewEmailRow');
+            if (row) {
+                row.style.display = 'table-row';
+            }
+        } else {
+            newsLetter.value = "true";
+            var row = document.getElementById('useNewEmailRow');
+            if (row) {
+                row.style.display = 'none';
+            }
+        }
+    }
+</script>
