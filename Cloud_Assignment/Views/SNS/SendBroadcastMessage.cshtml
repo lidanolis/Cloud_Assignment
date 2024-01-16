@@ -1,0 +1,107 @@
+﻿@{
+    ViewData["Title"] = "SendBroadcastMessage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    body {
+        background-color: lightblue;
+    }
+
+    h1 {
+        font-family: 'Trocchi', serif;
+        font-size: 38px;
+        font-weight: normal;
+        line-height: 48px;
+        margin: 0;
+    }
+
+    table {
+        margin: 10px;
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border: 2px solid #000;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    td {
+        padding: 15px;
+        background-color: lightgrey;
+    }
+
+    th {
+        background-color: lightblue;
+    }
+
+    .btnact {
+        width: 100%;
+        text-decoration: none;
+        padding: 0.5rem;
+        border: 1px solid #333333;
+        border-radius: 10px;
+        background-color: #F0F8FF;
+    }
+
+        .btnact:hover {
+            background-color: #9966FF;
+            color: #FFFFFF;
+        }
+
+    .textboxdsg {
+        width: 100%;
+        padding: 10px; /* Add padding to the textbox */
+        border: 1px solid #ccc; /* Add a border to the textbox */
+        border-radius: 5px; /* Add rounded corners */
+        color: #333; /* Set the text color */
+        font-size: 14px; /* Set the font size */
+    }
+</style>
+<body>
+<center>
+    <h1>Send Broadcast Message to Customers</h1>
+    <hr />
+        <form onsubmit="validateCredentials(event)" method="post" asp-action="sendBroadcastMessage" asp-controller="SNS">
+         <table>
+             <tr> 
+                 <td>
+                    <label>Subject Title of Email:</label>
+                </td>
+            </tr>
+                <tr><td><input type="text" class="textboxdsg" cols="100" name="subjecttitle" placeholder="->Email Title<-" /></td></tr>
+        <br /><br />
+        <tr>
+            <td>
+                        <textarea rows="10" class="textboxdsg" cols="100" name="msgbody" placeholder="->Email Body<-"></textarea>
+             </td>
+        </tr>
+        <br /><br />
+        <tr> 
+            <td>
+                        <button type="submit" class="btnact">Send Broadcast Message</button>
+            </td>
+        </tr>
+        </table>
+    </form>
+</center>
+</body>
+
+<script>
+    function validateCredentials(event) {
+        try {
+            var subjecttitle = document.getElementById('subjecttitle').value;
+            var msgbody = document.getElementById('msgbody').value;
+
+            if (subjecttitle == "" || msgbody == "") {
+                alert("Email Input Fields Cannot Be Empty");
+                event.preventDefault();
+            }else{
+                alert("Email Sent");
+            }
+        } catch (err) {
+            alert(err);
+            event.preventDefault();
+        }
+
+    }
+
+</script>

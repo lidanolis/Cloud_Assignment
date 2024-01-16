@@ -20,6 +20,8 @@ public class Cloud_AssignmentContext : IdentityDbContext<Cloud_AssignmentUser>
     public DbSet<RequestRecord> RequestRecord { get; set; }
     public DbSet<Cloud_AssignmentUser> AspNetUsers { get; set; }
 
+    public DbSet<NewsletterEmail> NewsletterEmail { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

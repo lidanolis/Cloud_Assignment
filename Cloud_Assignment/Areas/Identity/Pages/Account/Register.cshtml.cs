@@ -20,25 +20,31 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System.Runtime.InteropServices;
-
+using Cloud_Assignment.Data;
+using Cloud_Assignment.Models;
+using Cloud_Assignment.Controllers;
 namespace Cloud_Assignment.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
+        private readonly Cloud_AssignmentContext _Subscriptioncontext;
         private readonly SignInManager<Cloud_AssignmentUser> _signInManager;
         private readonly UserManager<Cloud_AssignmentUser> _userManager;
         private readonly IUserStore<Cloud_AssignmentUser> _userStore;
         private readonly IUserEmailStore<Cloud_AssignmentUser> _emailStore;
         private readonly ILogger<RegisterModel> _context;
         private readonly IEmailSender _emailSender;
+        //private readonly 
 
         public RegisterModel(
+            Cloud_AssignmentContext context,
             UserManager<Cloud_AssignmentUser> userManager,
             IUserStore<Cloud_AssignmentUser> userStore,
             SignInManager<Cloud_AssignmentUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
+            _Subscriptioncontext = context;
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
@@ -121,7 +127,7 @@ namespace Cloud_Assignment.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string newsLetter, string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -136,8 +142,38 @@ namespace Cloud_Assignment.Areas.Identity.Pages.Account
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                string subscriptionResult = "success";
+                if (newsLetter == "true")
+                {
+                    try
+                    {
+                        var userId = await _userManager.FindByEmailAsync(Input.Email);
+                        var SubscriptionEmail = new NewsletterEmail
+                        {
+                            Email = Input.Email,
+                            UserId = userId.Id
+                        };
 
-                if (result.Succeeded)
+                        _Subscriptioncontext.Add(SubscriptionEmail);
+                        await _Subscriptioncontext.SaveChangesAsync();
+                        SNSController snsControllerInstance = new SNSController(_Subscriptioncontext, _userManager);
+                        subscriptionResult = await snsControllerInstance.doSubscribe(Input.Email);
+                    }
+                    catch(Exception ex)
+                    {
+                        if (ex.InnerException != null)
+                        {
+                            return BadRequest("error " + ex.Message + "\nInner Exception " + ex.InnerException.Message);
+                        }
+                        else
+                        {
+                            return BadRequest("error " + ex.Message);
+                        }
+
+                    }
+                }
+
+                if (result.Succeeded && subscriptionResult == "success")
                 {
                     //_context.LogInformation("User created a new account with password.");
 

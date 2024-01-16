@@ -28,6 +28,11 @@
         @if (userAccount.UserRole == "staff")
         {
             <li class="nav-item">
+                <a id="viewInventory" class="nav-link text-dark" asp-action="SendBroadcastMessage" asp-controller="SNS">
+                    SEND BROADCAST MESSAGE
+                </a>
+            </li>
+            <li class="nav-item">
                 <a id="viewInventory" class="nav-link text-dark" asp-action="Index" asp-controller="Inventory">
                     View Inventory
                 </a>
