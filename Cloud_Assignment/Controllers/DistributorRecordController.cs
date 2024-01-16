@@ -1,12 +1,20 @@
-﻿using Cloud_Assignment.Data;
+﻿using Amazon.SQS;
+using Cloud_Assignment.Data;
 using Cloud_Assignment.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Amazon;
+using Amazon.S3;
+using Amazon.S3.Model;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Cloud_Assignment.Controllers
 {
     public class DistributorRecordController : Controller
     {
+        private const string s3BucketName = "cloudassignment-g15"; //need to change to your bucket name
         private readonly Cloud_AssignmentContext _context;
 
         public DistributorRecordController(Cloud_AssignmentContext context)
@@ -71,30 +79,63 @@ namespace Cloud_Assignment.Controllers
             return RedirectToAction("ViewRecord");
         }
 
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CompleteOrder(DistributionSchedule distributionSchedule)
+        private List<string> getKeys()
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    _context.DistributionSchedule.Update(distributionSchedule);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction("Index");
-                }
-                return View("DeliverOrder", distributionSchedule);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Error: " + ex.Message);
-            }
+            List<string> keys = new List<string>();
 
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+            IConfigurationRoot configure = builder.Build();
 
+            keys.Add(configure["Keys:Key1"]);
+            keys.Add(configure["Keys:Key2"]);
+            keys.Add(configure["Keys:Key3"]);
+
+            return keys;
         }
 
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CompleteOrder(DistributionSchedule distributionSchedule, IFormFile imagefile)
+        {
+
+            //Upload image to S3
+            try
+            {
+                List<string> keys = getKeys();
+                AmazonS3Client agentManage = new AmazonS3Client(keys[0], keys[1], keys[2], RegionEndpoint.USEast1);
+                PutObjectRequest uploadRequest = new PutObjectRequest
+                {
+                    InputStream = imagefile.OpenReadStream(),
+                    BucketName = s3BucketName,
+                    Key = "image/" + imagefile.FileName,
+                    CannedACL = S3CannedACL.PublicRead
+                };
+
+                await agentManage.PutObjectAsync(uploadRequest);
+            }
+            catch (AmazonS3Exception ex)
+            {
+                return BadRequest("Unable to upload image. Please contact the developer. Error: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Unable to upload image. Please contact the developer. Error: " + ex.Message);
+            }
+            distributionSchedule.ImageURL = "https://" + s3BucketName + ".s3.amazonaws.com/image/" + imagefile.FileName;
+            distributionSchedule.ImageS3Key = imagefile.FileName;
+
+            if (ModelState.IsValid)
+            {
+                _context.DistributionSchedule.Update(distributionSchedule);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View("DeliverOrder", distributionSchedule);
+
+        }
     }
 }
 

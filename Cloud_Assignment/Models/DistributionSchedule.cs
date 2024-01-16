@@ -24,5 +24,9 @@ namespace Cloud_Assignment.Models
         public String? DistributorId { get; set; }
 
         public Cloud_AssignmentUser? Distributor { get; set; }
+
+        public String? ImageURL { get; set; }
+
+        public String? ImageS3Key { get; set; }
     }
 }
