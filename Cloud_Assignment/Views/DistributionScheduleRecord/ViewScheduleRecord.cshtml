@@ -67,6 +67,7 @@
             <th>Distributor Name </th>
             <th>Edit Action </th>
             <th>Delete Action </th>
+            <th>View Proof</th>
         </tr>
         @foreach (var item in Model)
         {
@@ -90,6 +91,16 @@
                       onsubmit="return deleteConfirm()">
                 <td><button class="btn">Delete</button></td>
                 </form>
+                @if(item.ImageS3Key == null)
+                {
+                    <td>No Image Upload</td>
+                }
+                else
+                {
+                    <form asp-action="ViewProof" asp-controller="DistributionScheduleRecord" asp-route-imageId="flower.jpg" target="_blank">
+                    <td><button class="btn">View</button></td>
+                    </form>
+                }
             </tr>
         }
     </table>
