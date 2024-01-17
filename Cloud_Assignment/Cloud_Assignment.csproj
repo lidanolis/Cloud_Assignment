@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.300.36" />
     <PackageReference Include="AWSSDK.S3" Version="3.7.305.11" />
+    <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.300.37" />
     <PackageReference Include="AWSSDK.SQS" Version="3.7.300.36" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.12" />
@@ -26,6 +26,10 @@
 
   <ItemGroup>
     <Folder Include="Content\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\subscription_lambda\subscription_lambda.csproj" />
   </ItemGroup>
 
 </Project>

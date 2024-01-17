@@ -47,13 +47,18 @@ namespace Cloud_Assignment.Controllers
             AmazonSimpleNotificationServiceClient client = new AmazonSimpleNotificationServiceClient(keys[0], keys[1], keys[2], RegionEndpoint.USEast1);
             try
             {
-                SubscribeRequest request = new SubscribeRequest
+                /*SubscribeRequest request = new SubscribeRequest
                 {
                     TopicArn = SNSTopicARN,
                     Protocol = "email",
                     Endpoint = emailaccount
-                };
-                await client.SubscribeAsync(request);
+                };*/
+
+                //---------------------------
+                var httpcall = new HttpClient();
+                await httpcall.GetAsync("https://tog2o71o6c.execute-api.us-east-1.amazonaws.com/dev/SubscribeNewsletter?ec=" + emailaccount);
+                //---------------------------
+                //await client.SubscribeAsync(request);
                 return "success";
             }
             catch (AmazonSimpleNotificationServiceException ex)
@@ -183,7 +188,7 @@ namespace Cloud_Assignment.Controllers
             }
             else
             {
-                return BadRequest("Eamil:" + emailId + " " + result);
+                return BadRequest("Email:" + emailId + " " + result);
             }
         }
 
