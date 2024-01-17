@@ -7,6 +7,7 @@ namespace Cloud_Assignment.Models
     public class RequestRecord
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int RecordId { get; set; }
 
         //food/money

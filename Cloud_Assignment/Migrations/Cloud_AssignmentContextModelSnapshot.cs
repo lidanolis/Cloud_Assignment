@@ -179,10 +179,7 @@ namespace Cloud_Assignment.Migrations
             modelBuilder.Entity("Cloud_Assignment.Models.FoodRecord", b =>
                 {
                     b.Property<int>("RecordId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecordId"));
 
                     b.Property<DateTime>("DOR")
                         .HasColumnType("datetime2");

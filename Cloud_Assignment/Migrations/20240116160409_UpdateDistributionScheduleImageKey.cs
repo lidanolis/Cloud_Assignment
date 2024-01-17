@@ -10,45 +10,30 @@ namespace Cloud_Assignment.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "ImageURL",
-                table: "DistributionSchedule",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+            migrationBuilder.AddColumn<string>(
+            name: "ImageURL",
+            table: "DistributionSchedule",
+            type: "nvarchar(max)",
+            nullable: true);
 
-            migrationBuilder.AlterColumn<string>(
-                name: "ImageS3Key",
-                table: "DistributionSchedule",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+            migrationBuilder.AddColumn<string>(
+            name: "ImageS3Key",
+            table: "DistributionSchedule",
+            type: "nvarchar(max)",
+            nullable: true);
+
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
+            migrationBuilder.DropColumn(
                 name: "ImageURL",
-                table: "DistributionSchedule",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
+                table: "DistributionSchedule");
 
-            migrationBuilder.AlterColumn<string>(
+            migrationBuilder.DropColumn(
                 name: "ImageS3Key",
-                table: "DistributionSchedule",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
+                table: "DistributionSchedule");
         }
     }
 }

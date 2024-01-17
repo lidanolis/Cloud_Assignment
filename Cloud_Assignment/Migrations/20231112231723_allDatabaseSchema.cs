@@ -27,8 +27,7 @@ namespace Cloud_Assignment.Migrations
                 name: "RequestRecord",
                 columns: table => new
                 {
-                    RecordId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RecordId = table.Column<int>(type: "int", nullable: false),
                     requestType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     StaffId = table.Column<string>(type: "nvarchar(450)", nullable: true),
