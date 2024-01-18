@@ -25,7 +25,7 @@ namespace Cloud_Assignment.Controllers
 
         }
 
-        private const string SNSTopicARN = "arn:aws:sns:us-east-1:116183498964:FoodBankManagementSystemTopic";
+        private const string SNSTopicARN = "arn:aws:sns:us-east-1:743981991027:FoodBankManagementSystemTopic";
 
         private List<string> getKeys()
         {
@@ -56,7 +56,7 @@ namespace Cloud_Assignment.Controllers
 
                 //---------------------------
                 var httpcall = new HttpClient();
-                await httpcall.GetAsync("https://tog2o71o6c.execute-api.us-east-1.amazonaws.com/dev/SubscribeNewsletter?ec=" + emailaccount);
+                await httpcall.GetAsync("https://oo23tkjk5l.execute-api.us-east-1.amazonaws.com/dev/SubscribeNewsletter?ec=" + emailaccount);
                 //---------------------------
                 //await client.SubscribeAsync(request);
                 return "success";

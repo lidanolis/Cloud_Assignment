@@ -106,7 +106,7 @@ namespace Cloud_Assignment.Controllers
 
         public void ViewProof(string? imageId)
         {
-            string cloudfrontUrl = "https://d3h8frk5rv7b5p.cloudfront.net/";
+            string cloudfrontUrl = "https://d1xernjtrd120j.cloudfront.net/image/";
             string imageUrl = cloudfrontUrl + imageId;
             Response.Redirect(imageUrl);
         }

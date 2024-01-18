@@ -15,13 +15,13 @@
     "function-timeout"      : 15,
     "function-handler"      : "subscription_lambda::subscription_lambda.Function::FunctionHandler",
     "framework"             : "net6.0",
-    "function-name"         : "sendMessage",
+    "function-name"         : "subscriptionLambda",
     "function-description"  : "",
     "package-type"          : "Zip",
-    "function-role"         : "arn:aws:iam::332687543123:role/LabRole",
+    "function-role"         : "arn:aws:iam::743981991027:role/LabRole",
     "function-subnets"      : "",
     "function-security-groups" : "",
-    "tracing-mode"             : "PassThrough",
+    "tracing-mode"             : "Active",
     "environment-variables"    : "",
     "image-tag"                : ""
 }

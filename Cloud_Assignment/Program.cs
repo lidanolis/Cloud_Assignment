@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Cloud_Assignment.Data;
 using Cloud_Assignment.Areas.Identity.Data;
+using Amazon.XRay.Recorder.Handlers.AwsSdk;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Cloud_AssignmentContextConnection") ?? throw new InvalidOperationException("Connection string 'Cloud_AssignmentContextConnection' not found.");
@@ -13,6 +14,7 @@ builder.Services.AddDefaultIdentity<Cloud_AssignmentUser>(options => options.Sig
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+AWSSDKHandler.RegisterXRayForAllServices();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,6 +25,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseXRay("FoodBankManagementSystem");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

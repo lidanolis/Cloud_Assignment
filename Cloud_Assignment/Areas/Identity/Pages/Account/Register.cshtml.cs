@@ -156,6 +156,7 @@ namespace Cloud_Assignment.Areas.Identity.Pages.Account
 
                         _Subscriptioncontext.Add(SubscriptionEmail);
                         await _Subscriptioncontext.SaveChangesAsync();
+
                         SNSController snsControllerInstance = new SNSController(_Subscriptioncontext, _userManager);
                         subscriptionResult = await snsControllerInstance.doSubscribe(Input.Email);
                     }

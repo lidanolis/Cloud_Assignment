@@ -1,0 +1,20 @@
+
+{
+    "region" : "us-east-1",
+    "configuration" : "Debug",
+    "framework"     : "net7.0",
+    "self-contained" : true,
+    "application"    : "CloudAssignment",
+    "environment"    : "CloudAssignment-test",
+    "enable-xray"    : true,
+    "enhanced-health-type" : "enhanced",
+    "additional-options"   : "\"aws:autoscaling:launchconfiguration,SecurityGroups\"=\"sg-0f5e4b58e8bc521fc,sg-09011f0cd3ed7c537\";\"aws:ec2:vpc,Subnets\"=\"subnet-043088050b29bd53f\"",
+    "solution-stack"       : "64bit Amazon Linux 2 v2.6.3 running .NET Core",
+    "environment-type"     : "SingleInstance",
+    "cname"                : "cloudassignmenttask4and5groupassignment",
+    "instance-type"        : "t2.micro",
+    "key-pair"             : "",
+    "instance-profile"     : "LabInstanceProfile",
+    "service-role"         : "LabRole",
+    "proxy-server"         : "nginx"
+}

@@ -14,7 +14,7 @@ namespace Cloud_Assignment.Controllers
 {
     public class DistributorRecordController : Controller
     {
-        private const string s3BucketName = "cloudassignment-g15"; //need to change to your bucket name
+        private const string s3BucketName = "cloudassignments-g15"; //need to change to your bucket name
         private readonly Cloud_AssignmentContext _context;
 
         public DistributorRecordController(Cloud_AssignmentContext context)

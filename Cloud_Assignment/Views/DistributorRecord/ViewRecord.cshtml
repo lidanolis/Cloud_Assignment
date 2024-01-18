@@ -120,9 +120,17 @@
 					<td>@item.DistributionStatus</td>
 					<td>@item.DOD</td>
 					<td><img src="@item.ImageURL" width="200px" height="200px" /></td>
-					<form asp-action="Edit" asp-controller="DistributorRecord" asp-route-DistributionId="@item.DistributionId">
-					<td><button class="button" asp-action="DeliverOrder" asp-controller="DistributorRecord" asp-route-DistributionId="@item.DistributionId"> Edit</button></td>
-					</form>
+					
+					@if (item.ImageURL == "")
+					{
+						<form asp-action="Edit" asp-controller="DistributorRecord" asp-route-DistributionId="@item.DistributionId">
+						<td><button class="button" asp-action="DeliverOrder" asp-controller="DistributorRecord" asp-route-DistributionId="@item.DistributionId"> Edit</button></td>
+						</form>
+					}
+					else
+					{
+						<td>Order is completed</td>
+					}
 					<form asp-action="Delete" asp-controller="DistributorRecord" asp-route-DistributionId="@item.DistributionId">
 					<td><button class="button" asp-action="DeleteOrder" asp-controller="DistributorRecord" asp-route-DistributionId="@item.DistributionId"> Delete</button></td>
 					</form>

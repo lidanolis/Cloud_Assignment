@@ -67,7 +67,7 @@ namespace Cloud_Assignment.Controllers
                 await _context.SaveChangesAsync();
                 var request = new SendMessageRequest
                 {
-                    QueueUrl = "https://sqs.us-east-1.amazonaws.com/446466087465/pending-list",
+                    QueueUrl = "https://sqs.us-east-1.amazonaws.com/743981991027/pending-list",
                     MessageBody = JsonConvert.SerializeObject(new
                     {
 				        RecordId = (timestamp << 16),

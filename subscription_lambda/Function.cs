@@ -12,15 +12,15 @@ namespace subscription_lambda;
 
 public class Function
 {
-    private const string topicARN = "arn:aws:sns:us-east-1:332687543123:newsletterEmailExample";
+    private const string topicARN = "arn:aws:sns:us-east-1:743981991027:FoodBankManagementSystemTopic";
     AmazonSimpleNotificationServiceClient snsagent;
     public Function()
     {
         snsagent = new AmazonSimpleNotificationServiceClient
         (
-            "ASIAU25NZBNJWKLRJEPY",
-            "4BBtyTLRR3kiCvZpwoZ5LJuyENBNAc+nwvqSkEj/",
-            "FwoGZXIvYXdzECQaDPiOUcfvp5oH6Vw2gyLJAQcFOGB40TDL1AuoeS+Jl7eBm3+rfH33ZGUF42Acpd3hlf0jp4AdSa+agXKQVM0jRls3LpAvGaCnWi3B2iu9dZLY8qhBJSf2Opp4NPVcRxUHCaHDtBqU9VhLDa/SuMu0PlgdS3M2peQy/biI818zpGtRUQ/nr0JOfcYthJyw4FtgpGygypwsRX4VNOTkrKM1q++DJhXXgSbbVlp0A6epA8tqRL/hEXyCIY1iRNZFqLgjubQTprVZV/bt5ovf3dsF/PX6CXs506LhiSjB1Z6tBjItpxic8Q4P0/qCIHJofTOnLslDczB1nO6DhW+hh9Oa6SUAK9BEh3fkGj+bIx+v",
+			"ASIA22OGIIRZ4CZ4LKSW",
+			"e12+EoJl22g6QG0xc/20wtx9pwRtl31FMXWpzmGh",
+			"FwoGZXIvYXdzEDcaDF/NgAECQdhoafLcbSLJAQHYpbUZAQ6nh9KTxdXHXLtqeRD3Xoheui67wCFzxnqylSjLJy14ZPHl8LFQbATK1Oawkzhp8AIEj3EO3+6CGQWUo5EwgxVsWSGq8gFCxCl+ijWQqFdT5MupfoEw6YuZIbm9krAX7MC1tX2DwvmY1zwz0trHJWiGLk1ul+Q9IRwQ0MlPrxYjHJycJJJmDe2qP46ZJfcSh88yyI7J0Evw5JuMtEW/0e2jIhrtH9zTm7yaXTTz1Z94Is43RimkHgICxf2nusJb3kst1yi/+qKtBjItRJcG3TG0VBvsbZ/8lwhEbc1qYjmAl8j8he8zrkLQWNt/kao5ciFZlUcnj/2o",
             RegionEndpoint.USEast1
         );
     }
