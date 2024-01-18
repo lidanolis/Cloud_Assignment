@@ -38,28 +38,28 @@ namespace Cloud_Assignment.Controllers
             return View(record);
         }
 
-        public async Task<IActionResult> EditDistributionScheduleRecord(int ? DistributionId)
+        public async Task<IActionResult> EditDistributionScheduleRecord(int? DistributionId)
         {
-            if(DistributionId == null)
+            if (DistributionId == null)
             {
                 return NotFound();
             }
             var distributionRecord = await _context.DistributionSchedule.FindAsync(DistributionId);
 
-            if(distributionRecord == null)
+            if (distributionRecord == null)
             {
                 return BadRequest(DistributionId + "is not found in the table!");
             }
             return View(distributionRecord);
         }
 
-    
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddDistributionRecord(DistributionViewModel viewModel)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _context.DistributionSchedule.Add(viewModel.DistributionRecord!);
                 await _context.SaveChangesAsync();
@@ -103,5 +103,14 @@ namespace Cloud_Assignment.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("ViewScheduleRecord", "DistributionScheduleRecord");
         }
+
+        public void ViewProof(string? imageId)
+        {
+            string cloudfrontUrl = "https://d3h8frk5rv7b5p.cloudfront.net/";
+            string imageUrl = cloudfrontUrl + imageId;
+            Response.Redirect(imageUrl);
+        }
     }
+
+    
 }
