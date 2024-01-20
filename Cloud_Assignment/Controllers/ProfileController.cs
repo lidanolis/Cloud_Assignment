@@ -40,6 +40,19 @@ namespace Cloud_Assignment.Controllers
             List<FinancialRecord> financialList = await _context.FinancialRecord.ToListAsync();
             List<DistributionSchedule> distributionList = await _context.DistributionSchedule.ToListAsync();
             List<RequestRecord> requestList = await _context.RequestRecord.ToListAsync();
+            List<NewsletterEmail> NewsletterEmailList = await _context.NewsletterEmail.ToListAsync();
+
+
+            if (NewsletterEmailList.Count > 0)
+            {
+                var itemToRemove = NewsletterEmailList.Where(item => item.UserId == UId).ToList();
+
+                if (itemToRemove.Count > 0)
+                {
+                    _context.NewsletterEmail.RemoveRange(itemToRemove);
+                    await _context.SaveChangesAsync();
+                }
+            }
 
             if (foodList.Count > 0)
             {
